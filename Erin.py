@@ -1,12 +1,4 @@
-import discord
-import random
-import datetime
-import time
-import pickle
-import re
-import operator
-from discord.ext import tasks
-import os
+
 
 client = discord.Client()
 prefix = "에린아 "
