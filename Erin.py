@@ -1,4 +1,12 @@
-
+import discord
+import random
+import datetime
+import time
+import pickle
+import re
+import operator
+from discord.ext import tasks
+import os
 
 client = discord.Client()
 prefix = "에린아 "
@@ -7,7 +15,7 @@ prefix = "에린아 "
 async def on_ready():
     print(client.user.id)
     print("ready")
-    #game = discord.Game("테스트")
+    game = discord.Game("테스트")
     Daily.start()
     await client.change_presence(status=discord.Status.online, activity=game)
 
