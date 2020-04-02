@@ -6,6 +6,7 @@ import pickle
 import re
 import operator
 from discord.ext import tasks
+import os
 
 client = discord.Client()
 prefix = "에린아 "
@@ -785,4 +786,5 @@ async def Help(message):
     await message.channel.send(embed=embed)
     return
 
-client.run("Njc5NjkzOTA5MjM1OTkwNTQz.Xlpi0w.HrPUB16fFs43DxgK7TfQfY_IhnM")
+access_token = os.environ["BOT_TOKEN"]
+client.run(access_token)
