@@ -787,4 +787,4 @@ async def Help(message):
     return
 
 access_token = os.environ["BOT_TOKEN"]
-client.run("Njc5NjkzOTA5MjM1OTkwNTQz.XoYLpA.C49KyYcHLXsEoZZXwv4D1wl2nEE")
+client.run(access_token)
