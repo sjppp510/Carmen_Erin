@@ -740,20 +740,20 @@ async def on_reaction_add(reaction, user):
 
     return None
 
-async def VoiceChannel(message, talk):
-    voice_Talk = talk.split(" ")
-    if voice_Talk[1]=="만들기":
-        try:
-            new_Channel = await discord.Guild.create_voice_channel(message.guild, voice_Talk[2],category=message.channel.category)
-            if len(voice_Talk) == 4:
-                await new_Channel.edit(user_limit=int(voice_Talk[3]))
-        except IndexError:
-            await message.channel.send("채널 이름을 입력해\nex)에린아 음성채널 만들기 카르멘")
+# async def VoiceChannel(message, talk):
+#     voice_Talk = talk.split(" ")
+#     if voice_Talk[1]=="만들기":
+#         try:
+#             new_Channel = await discord.Guild.create_voice_channel(message.guild, voice_Talk[2],category=message.channel.category)
+#             if len(voice_Talk) == 4:
+#                 await new_Channel.edit(user_limit=int(voice_Talk[3]))
+#         except IndexError:
+#             await message.channel.send("채널 이름을 입력해\nex)에린아 음성채널 만들기 카르멘")
 
-    if voice_Talk[1] == "삭제":
-        channel = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name=voice_Talk[2])
-        await channel.delete()
-    return None
+#     if voice_Talk[1] == "삭제":
+#         channel = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name=voice_Talk[2])
+#         await channel.delete()
+#     return None
 
 async def Sns(message, talk):
     sns_Talk = talk.split(" ")
