@@ -480,6 +480,20 @@ async def Caution(message, talk):
         embed.add_field(name="경고", value=cautionMessage, inline=False)
         await message.channel.send(embed=embed)
         return None
+    
+    if caution_Talk[1].startswith("<@"):
+        cautionMessage = ""
+        User_ID = int(re.findall("\d+", caution_Talk[1])[0])
+        with open("Caution.txt", 'r') as f:
+            for line in f:
+                if (line.startswith(str(User_ID))):
+                    cautionMessage += "{0}월 {1}일 경고\n".format(line[19], line[20:len(line) - 1])
+        if cautionMessage == "":
+            await message.channel.send(message.author.name + "님은 경고가 없습니다")
+            return None
+        embed = discord.Embed(title="{0}님의 경고".format(message.guild.get_member(User_ID).name), colour=discord.Colour.red())
+        embed.add_field(name="경고", value=cautionMessage, inline=False)
+        await message.channel.send(embed=embed)
 
     if caution_Talk[1] == "지급":
         if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
