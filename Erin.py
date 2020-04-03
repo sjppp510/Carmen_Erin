@@ -489,7 +489,7 @@ async def Caution(message, talk):
                 if (line.startswith(str(User_ID))):
                     cautionMessage += "{0}월 {1}일 경고\n".format(line[19], line[20:len(line) - 1])
         if cautionMessage == "":
-            await message.channel.send(message.author.name + "님은 경고가 없습니다")
+            await message.channel.send(message.guild.get_member(User_ID).name + "님은 경고가 없습니다")
             return None
         embed = discord.Embed(title="{0}님의 경고".format(message.guild.get_member(User_ID).name), colour=discord.Colour.red())
         embed.add_field(name="경고", value=cautionMessage, inline=False)
