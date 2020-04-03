@@ -342,9 +342,9 @@ async def on_message(message):
         await message.channel.send(embed=embed)
         return None
 
-    if talk.startswith("음성채팅"):
-        await VoiceChannel(message, talk)
-        return None
+    #if talk.startswith("음성채팅"):
+    #    await VoiceChannel(message, talk)
+    #    return None
 
     if talk.startswith("sns"):
         await Sns(message, talk)
