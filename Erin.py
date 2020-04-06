@@ -15,7 +15,7 @@ prefix = "에린아 "
 async def on_ready():
     print(client.user.id)
     print("ready")
-    game = discord.Game("테스트")
+    game = discord.Game("호스팅 테스트")
     Daily.start()
     await client.change_presence(status=discord.Status.online, activity=game)
 
@@ -233,7 +233,9 @@ async def on_message(message):
         return None
 
     if talk.startswith("시간") or talk.startswith("시간은"):
-        now = datetime.datetime.now()
+        utcnow = datetime.datetime.utcnow()
+        time_gap = datetime.timedelta(hours=9)
+        now = utcnow + time_gap
         await message.channel.send(str(now.year) + "년 " + str(now.month) + "월 " + str(now.day) + "일 | " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second))
         return None
 
@@ -783,13 +785,17 @@ async def Sns(message, talk):
             await message.channel.send("잘못 입력했어\nex)에린아 sns 개설 {채널이름} {소개}")
     return None
 
-@tasks.loop(seconds=60*60*24)
+@tasks.loop(seconds=60*60)
 async def Daily():
     #로또 초기화
-    with open("Lotto.pkl", 'w') as f:
-        f.write("")
-    with open("Daily.txt", 'w') as f:
-        f.write("")
+    utcnow = datetime.datetime.utcnow()
+    time_gap = datetime.timedelta(hours=9)
+    now = utcnow + time_gap
+    if now.hour == 0:
+        with open("Lotto.pkl", 'w') as f:
+            f.write("")
+        with open("Daily.txt", 'w') as f:
+            f.write("")
 
 async def Help(message):
     embed = discord.Embed(title= "에린이 도움말",colour=discord.Colour.red())
