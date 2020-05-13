@@ -355,6 +355,10 @@ async def on_message(message):
     if talk.startswith("구매"):
         await Buy(message, talk)
         return None
+    
+    if talk.startswith("id") or talk.startswith("ID"):
+        await message.channel.send(message.author.mention + "님의 ID는 \n" + "```" + str(message.author.id) + "```")
+        return None
 
 
 async def Lotto(message, talk):
