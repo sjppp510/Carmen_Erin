@@ -147,7 +147,7 @@ async def on_message(message):
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("고래"):
-        Chat = ["음악관장이시지", "골든 리트리버"]
+        Chat = ["음악관장이시지", "바보"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("피아"):
@@ -159,7 +159,7 @@ async def on_message(message):
         await message.channel.send(Chat[random.randrange(0, len(Chat))])
         return None
     if talk.startswith("만두"):
-        Chat = ["기사단장이지, 곧 간대","^^7"]
+        Chat = ["기사단장이지, 국방의 의무를 다하시는 중","^^7"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("개발팀"):
@@ -178,7 +178,7 @@ async def on_message(message):
         await message.channel.send("반갑다요?")
         return None
     if talk.startswith("Teacat"):
-        Chat = ["나를 개방해주신 분이야!"]
+        Chat = ["나를 개방해주신 분이야!", "홍고"]
         await message.channel.send(Chat[random.randrange(0, len(Chat))])
         return None
     if talk.startswith("안내팀"):
@@ -198,11 +198,11 @@ async def on_message(message):
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("도서진"):
-        Chat = ["캐릭터를 도맡아 그려주시는 완전 금손 디자인팀!"]
+        Chat = ["캐릭터를 도맡아 그려주시는 완전 금손 디자인팀!근데....사라지셨어.."]
         await message.channel.send(Chat[random.randrange(0, len(Chat))])
         return None
     if talk.startswith("권지원"):
-        Chat = ["소품 위주로 그려주시는 완전 예쁜 디자인팀 겸 안내팀!"]
+        Chat = ["소품 위주로 그려주시는 완전 예쁜 디자인팀 겸 안내팀!이었었는데..."]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("밤연"):
