@@ -171,13 +171,11 @@ async def on_message(message):
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("상런쳐"):
+        await message.channel.send("난 에린이 아빠에요")
+        time.sleep(1)
         await message.channel.send("안녕해요")
         time.sleep(1)
         await message.channel.send("반갑다요?")
-        return None
-    if talk.startswith("권혁"):
-        Chat = ["아빠"]
-        await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("Teacat"):
         Chat = ["나를 개방해주신 분이야!"]
@@ -216,9 +214,12 @@ async def on_message(message):
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("가온"):
-        Chat = ["유일한 기획팀인 금수저"]
+        Chat = ["금수저"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
+    if talk.starswith("푸딩") or talk.starswith("김푸딩"):
+        Char = ["🍮"]
+        awit message.channel.send(Chat[random.randrange(0, len(Chat))])
 
     if talk.startswith("노라조"):
         Chat = ["https://www.youtube.com/watch?v=2CGc9Ly11yo", "https://www.youtube.com/watch?v=ezwgRTy8R8U",
