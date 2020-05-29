@@ -213,7 +213,7 @@ async def on_message(message):
         Chat = ["금수저"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
-    if talk.starswith("푸딩") or talk.starswith("김푸딩"):
+    if talk.startswith("푸딩") or talk.startswith("김푸딩"):
         Chat = ["🍮"]
         await message.channel.send(Chat[random.randrange(0, len(Chat))])
 
