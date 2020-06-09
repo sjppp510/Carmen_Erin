@@ -356,6 +356,23 @@ async def on_message(message):
     if talk.startswith("id") or talk.startswith("ID"):
         await message.channel.send(message.author.mention + "님의 ID는 \n" + "```" + str(message.author.id) + "```")
         return None
+    
+        if talk.startswith("삭제"):
+        utcnow = datetime.datetime.utcnow()
+        try:
+            time_gap = datetime.timedelta(hours=int(talk.split(" ")[1]))
+        except IndexError:
+            time_gap = datetime.timedelta(hours=1)
+        now = utcnow - time_gap
+
+        messages = await message.channel.history(limit=None, after=now, before=utcnow).flatten()
+        for m in messages:
+            if m.author == message.author:
+                if m.content.startswith("에린아 삭제"):
+                    continue
+                await m.delete()
+        await message.add_reaction("✅")
+        return None
 
 
 async def Lotto(message, talk):
@@ -757,20 +774,24 @@ async def on_reaction_add(reaction, user):
 
     return None
 
-# async def VoiceChannel(message, talk):
-#     voice_Talk = talk.split(" ")
-#     if voice_Talk[1]=="만들기":
-#         try:
-#             new_Channel = await discord.Guild.create_voice_channel(message.guild, voice_Talk[2],category=message.channel.category)
-#             if len(voice_Talk) == 4:
-#                 await new_Channel.edit(user_limit=int(voice_Talk[3]))
-#         except IndexError:
-#             await message.channel.send("채널 이름을 입력해\nex)에린아 음성채널 만들기 카르멘")
-
-#     if voice_Talk[1] == "삭제":
-#         channel = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name=voice_Talk[2])
-#         await channel.delete()
-#     return None
+@client.event
+async def on_voice_state_update(member, before, after):
+    try:
+        if member.voice.channel.category.name == "방":
+            time.sleep(2)
+            if before.channel == None:
+                if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="방생성").members:
+                    new_Channel = await discord.Guild.create_voice_channel(member.guild, "제목을 입력해주세요.", category=member.voice.channel.category)
+                    await new_Channel.set_permissions(member, manage_channels = True)
+                    await member.move_to(new_Channel)
+    except AttributeError:
+        None
+    try:
+        if before.channel.category.name == "방":
+            if after.channel == None and before.channel.name != "방생성" and len(before.channel.members) == 0:
+                await before.channel.delete()
+    except AttributeError:
+        None
 
 async def Sns(message, talk):
     sns_Talk = talk.split(" ")
