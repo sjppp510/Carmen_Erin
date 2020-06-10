@@ -786,9 +786,9 @@ async def on_voice_state_update(member, before, after):
                     await member.move_to(new_Channel)
                     
             elif after.channel.name == "private check in":
-                if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="check in").members:
+                if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="private check in").members:
                     new_Channel = await discord.Guild.create_voice_channel(member.guild, "제목을 입력해주세요.", category=member.voice.channel.category)
-                    await new_Channel.set_permissions(client.get_all_members(), see_voice_channels = False)
+                    await new_Channel.set_permissions(member.guild.default_role, view_channel = False)
                     await member.move_to(new_Channel)
     except AttributeError:
         None
