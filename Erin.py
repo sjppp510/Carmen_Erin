@@ -779,7 +779,7 @@ async def on_voice_state_update(member, before, after):
     try:
         if member.voice.channel.category.name == "방":
             time.sleep(2)
-            if before.channel == None:
+            if after.channel.name == "방생성":
                 if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="방생성").members:
                     new_Channel = await discord.Guild.create_voice_channel(member.guild, "제목을 입력해주세요.", category=member.voice.channel.category)
                     await new_Channel.set_permissions(member, manage_channels = True)
