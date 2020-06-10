@@ -368,7 +368,7 @@ async def on_message(message):
         messages = await message.channel.history(limit=None, after=now, before=utcnow).flatten()
         for m in messages:
             if m.author == message.author:
-                if m.content.startswith("에린아 삭제"):
+                if m.content.startswith("에린아 삭제") or m.content.startswith("에린아 청소"):
                     continue
                 await m.delete()
         await message.add_reaction("✅")
