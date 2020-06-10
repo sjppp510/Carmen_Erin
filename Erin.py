@@ -788,7 +788,7 @@ async def on_voice_state_update(member, before, after):
         None
     try:
         if before.channel.category.name == "여관":
-            if after.channel == None and before.channel.name != "check in" and len(before.channel.members) == 0:
+            if before.channel.name != "check in" and len(before.channel.members) == 0:
                 await before.channel.delete()
     except AttributeError:
         None
