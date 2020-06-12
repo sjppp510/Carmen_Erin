@@ -10,13 +10,14 @@ import os
 
 client = discord.Client()
 prefix = "에린아 "
+Hour = 0
 
 @client.event
 async def on_ready():
     print(client.user.id)
     print("ready")
-    game = discord.Game("호스팅 테스트")
     Daily.start()
+    game = discord.Game("에린 베타테스트 중")
     await client.change_presence(status=discord.Status.online, activity=game)
 
 @client.event
@@ -816,6 +817,9 @@ async def Sns(message, talk):
 
 @tasks.loop(seconds=60*60)
 async def Daily():
+    Hour += 1
+    game = discord.Game("에린" + str(Hour) + "베타테스트")
+    await client.change_presence(status=discord.Status.online, activity=game)
     #로또 초기화
     utcnow = datetime.datetime.utcnow()
     time_gap = datetime.timedelta(hours=9)
