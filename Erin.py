@@ -17,7 +17,7 @@ async def on_ready():
     print(client.user.id)
     print("ready")
     Daily.start()
-    game = discord.Game("에린" + str(Hour) + "시간 동안 베타테스트 중")
+    game = discord.Game("에린" + str(Hour) + "시간 동안 베타테스트")
     await client.change_presence(status=discord.Status.online, activity=game)
 
 @client.event
