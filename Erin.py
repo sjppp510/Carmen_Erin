@@ -17,7 +17,7 @@ async def on_ready():
     print(client.user.id)
     print("ready")
     Daily.start()
-    game = discord.Game("에린 베타테스트 중")
+    game = discord.Game("에린" + str(Hour) + "시간 동안 베타테스트 중")
     await client.change_presence(status=discord.Status.online, activity=game)
 
 @client.event
@@ -818,7 +818,7 @@ async def Sns(message, talk):
 @tasks.loop(seconds=60*60)
 async def Daily():
     Hour += 1
-    game = discord.Game("에린" + str(Hour) + "째 베타테스트")
+    game = discord.Game("에린" + str(Hour) + "시간 동안 베타테스트")
     await client.change_presence(status=discord.Status.online, activity=game)
     #로또 초기화
     utcnow = datetime.datetime.utcnow()
