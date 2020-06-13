@@ -15,7 +15,6 @@ prefix = "에린아 "
 async def on_ready():
     print(client.user.id)
     print("ready")
-    Daily.start()
     game = discord.Game("베타테스트")
     await client.change_presence(status=discord.Status.online, activity=game)
 
@@ -340,10 +339,6 @@ async def on_message(message):
         embed.set_image(url="https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png")
         await message.channel.send(embed=embed)
         return None
-
-    #if talk.startswith("음성채팅"):
-    #    await VoiceChannel(message, talk)
-    #    return None
 
     if talk.startswith("sns"):
         await Sns(message, talk)
@@ -820,11 +815,7 @@ async def Daily():
     utcnow = datetime.datetime.utcnow()
     time_gap = datetime.timedelta(hours=9)
     now = utcnow + time_gap
-    if now.hour == 0:
-        with open("Lotto.pkl", 'w') as f:
-            f.write("")
-        with open("Daily.txt", 'w') as f:
-            f.write("")
+    return None
 
 async def Help(message):
     embed = discord.Embed(title= "에린이 도움말",colour=discord.Colour.red())
@@ -833,7 +824,7 @@ async def Help(message):
                                      "에린아 로또 확인 : 본인의 로또 번호를 확인합니다", inline=False)
     embed.set_footer(text="셋푸터")
     await message.channel.send(embed=embed)
-    return
+    return None
 
 access_token = os.environ["BOT_TOKEN"]
 client.run(access_token)
