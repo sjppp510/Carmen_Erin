@@ -234,6 +234,17 @@ async def on_message(message):
         now = utcnow + time_gap
         await message.channel.send(str(now.year) + "년 " + str(now.month) + "월 " + str(now.day) + "일 | " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second))
         return None
+    
+    if talk.startswith("춤"):
+        dance = ["ㄴㅇ0ㅇㄱ", "ㄴ'^'ㄱ"]
+        msg = await message.channel.send(dance[random.randrange(0, len(dance))])
+        i = 0
+        while i < 5:
+            time.sleep(0.5)
+            table = str.maketrans('ㄴㄱ', 'ㄱㄴ')
+            await msg.edit(content=msg.content.translate(table))
+            i += 1
+        return None
 
     if talk.startswith("도움말"):
         await Help(message)
