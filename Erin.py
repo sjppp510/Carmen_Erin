@@ -236,7 +236,7 @@ async def on_message(message):
         return None
     
     if talk.startswith("춤"):
-        dance = ["ㄴㅇ0ㅇㄱ", "ㄴ'^'ㄱ"]
+        dance = ["ㄴㅇ0ㅇㄱ", "ㄴ'^'ㄱ", "ㄴ( ᐛ )ㄱ", "ㄴ(ｏ`皿′ｏ)ㄱ", "ㄴ(≧▽≦)ㄱ", "ㄴ(。•́︿•̀。)ㄱ", "ㄴ( ･ㅂ･)ㄱ"]
         msg = await message.channel.send(dance[random.randrange(0, len(dance))])
         i = 0
         while i < 5:
