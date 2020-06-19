@@ -251,10 +251,10 @@ async def on_message(message):
         msg = rap[random.randrange(0, len(rap))]
         i = 1
         chat = await message.channel.send(msg[0])
-        while i <= len(msg):
-            time.sleep(0.2)
-            await chat.edit(content=chat.content + msg[i])
-            i += 1
+        temp = chat.content
+        for i in msg[1:]:
+            temp += i
+            await chat.edit(content=temp)
 
     if talk.startswith("도움말"):
         await Help(message)
