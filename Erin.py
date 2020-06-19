@@ -251,7 +251,7 @@ async def on_message(message):
         msg = rap[random.randrange(0, len(rap))]
         i = 1
         chat = await message.channel.send(msg[0])
-        while i <= len(rap):
+        while i <= len(msg):
             time.sleep(0.2)
             await chat.edit(content=chat.content + msg[i])
             i += 1
