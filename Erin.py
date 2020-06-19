@@ -253,7 +253,7 @@ async def on_message(message):
         chat = await message.channel.send(msg[0])
         while i <= len(rap):
             time.sleep(0.2)
-            awit chat.edit(content=chat.content + msg[i])
+            await chat.edit(content=chat.content + msg[i])
             i += 1
 
     if talk.startswith("도움말"):
