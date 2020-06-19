@@ -245,6 +245,16 @@ async def on_message(message):
             await msg.edit(content=msg.content.translate(table))
             i += 1
         return None
+    
+    if talk.startswith("랩"):
+        rap = ["상처를 치료해줄 사람 어디 없나\n가만히 놔두다간 끊임없이 덧나\n사랑도 사람도 너무나도 겁나\n혼자인게 무서워 난 잊혀질까 두려워"]
+        msg = rap[random.randrange(0, len(rap))]
+        i = 1
+        chat = await message.channel.send(msg[0])
+        while i <= len(rap):
+            time.sleep(0.2)
+            awit chat.edit(content=chat.content + msg[i])
+            i += 1
 
     if talk.startswith("도움말"):
         await Help(message)
