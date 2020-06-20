@@ -380,7 +380,8 @@ async def on_message(message):
         except IndexError:
             time_gap = datetime.timedelta(hours=1)
         now = utcnow - time_gap
-
+        await message.add_reaction("⏳")
+        await message.clear_reactions()
         messages = await message.channel.history(limit=None, after=now, before=utcnow).flatten()
         for m in messages:
             if m.author == message.author:
