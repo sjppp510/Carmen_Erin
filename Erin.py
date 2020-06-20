@@ -390,6 +390,35 @@ async def on_message(message):
         await message.clear_reactions()
         await message.add_reaction("✅")
         return None
+    
+    if talk.startswith("가위바위보"):
+        def check(m):
+            return m.author == message.author and (m.content == "가위" or m.content == "바위" or m.content == "보")
+        await message.channel.send("가위 바위 보!")
+        try:
+            msg = await client.wait_for('message', timeout=10.0, check=check)
+        except asyncio.TimeoutError:
+            await message.channel.send("너무 오래걸려ㅡnㅡ")
+        else:
+            rsp_list = ["가위", "바위", "보"]
+            rsp = rsp_list[random.randint(0, 2)] # 0 = 가위, 1 = 바위, 2 = 보
+
+            result = ""
+            if msg.content == rsp:
+                result = "무승부"
+            else:
+                if rsp == "가위":
+                    result = "승리" if msg.content == "바위" else "패배"
+                elif rsp == "바위":
+                    result = "승리" if msg.content == "보" else "패배"
+                elif rsp == "보":
+                    result = "승리" if msg.content == "가위" else "패배"
+
+            embed = discord.Embed(title="가위바위보", colour=discord.Colour.red())
+            embed.add_field(name=message.author.display_name, value=msg.content, inline=False)
+            embed.add_field(name="에린", value=rsp, inline=False)
+            embed.set_footer(text=result)
+            await message.channel.send(embed=embed)
 
 
 async def Lotto(message, talk):
