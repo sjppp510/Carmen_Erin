@@ -436,8 +436,14 @@ async def Lotto(message, talk):
             collection.update_one(x, {"$min": {"Count" : 0,  "lotto": []}}, upsert=True)
         await message.channel.send("로또를 초기화했습니다")
         return None
-    lotto_List = collection.find({"_id": message.author.id})[0].get("lotto")
-    count = collection.find({"_id": message.author.id})[0].get("Count")
+    
+    try:
+        lotto_List = collection.find({"_id": message.author.id})[0].get("lotto")
+        count = collection.find({"_id": message.author.id})[0].get("Count")
+    except IndexError:
+        collection.insert_one({"_id": message.author.id, "Count": 0, "lotto": []})
+        lotto_List = []
+        count = 0
 
     if  lotto_Talk[1] == "랜덤":
         try:
