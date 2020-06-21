@@ -26,7 +26,12 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if not(message.content.startswith(prefix)) or message.author.bot:
+    if message.author.bot:
+        return None
+    collection = db.Point
+    collection.update_one({"_id": message.author.id}, {"$setOnInsert": {"Lotto" : [] , "Count" : 0, "Point" : 0}}, upsert=True)
+
+    if not(message.content.startswith(prefix)):
         return None
 
     talk = message.content[len(prefix):]
