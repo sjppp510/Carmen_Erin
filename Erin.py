@@ -10,6 +10,10 @@ from discord.ext import tasks
 import os
 
 client = discord.Client()
+mongo_URL = os.environ["MONGO_URL"]
+connection = MongoClient(mongo_URL)
+db = connection.get_database("Erin")
+
 prefix = "에린아 "
 
 @client.event
@@ -424,30 +428,16 @@ async def on_message(message):
 
 async def Lotto(message, talk):
     lotto_Talk = talk.split(" ")
+    collection = db.Lotto
     if lotto_Talk[1] == "초기화":
-        with open("Lotto.pkl", 'w') as f:
-            f.write("")
-        with open("Lotto.txt", 'w') as f:
-            f.write("")
+        all = collection.find()
+        for x in all:
+            collection.update_one(x, {"$min": {"Count" : 0,  "lotto": []}}, upsert=True)
         await message.channel.send("로또를 초기화했습니다")
         return None
-    lotto_List = []
-    with open("Lotto.txt", 'r') as f:
-        for line in f:
-            if line.startswith(str(message.author.id)):
-                lotto_List.append(str(line[19:25]))
-    with open("Lotto.pkl", "rb") as f:
-        datalist = []
-        while True:
-            try:
-                data = pickle.load(f)
-            except EOFError:
-                break
-            datalist.append(data)
-        datalist = dict(datalist)
-        count = datalist.get(str(message.author.id) + "Count")
-        if count==None:
-            count = 0
+    lotto_List = collection.find({"_id": message.author.id})[0].get("lotto")
+    count = collection.find({"_id": message.author.id})[0].get("Count")
+
     if  lotto_Talk[1] == "랜덤":
         try:
             lotto = int(lotto_Talk[2])
@@ -460,22 +450,23 @@ async def Lotto(message, talk):
             await message.channel.send("<@" + str(message.author.id) + "> 님의 로또 수 : " + str(count))
             return None
         _count = int(lotto_Talk[2])
-        with open("Lotto.txt", 'a') as f:
-            for i in range(1, _count + 1):
-                while True:
-                    a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-                    lotto = ""
-                    for j in range(0, 6):
-                        index = random.randint(0, len(a) - 1)
-                        lotto = lotto + str(a[index])
-                        del a[index]
-                    if lotto in lotto_List:
-                        continue
-                    await message.channel.send(lotto)
-                    f.write(str(message.author.id) + " " + lotto + "\n")
-                    break
-            with open("Lotto.pkl", "ab") as f:
-                pickle.dump([str(message.author.id) + "Count" , count + _count] , f)
+        for i in range(1, _count + 1):
+            while True:
+                a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                lotto = ""
+                for j in range(0, 6):
+                    index = random.randint(0, len(a) - 1)
+                    lotto = lotto + str(a[index])
+                    del a[index]
+                if lotto in lotto_List:
+                    continue
+                await message.channel.send(lotto)
+                lotto_List.append(lotto)
+                break
+
+        collection.update_one({"_id": message.author.id}, {"$set": {"_id": message.author.id, "Count": count + _count, "lotto": lotto_List}},upsert=True)
+        return None
+
     if lotto_Talk[1] =="선택":
         if count + 1 > 10:
             await message.channel.send("로또는 하루에 10개까지만 구매하실 수 있습니다")
@@ -503,31 +494,22 @@ async def Lotto(message, talk):
                 await message.channel.send("이미 등록된 번호입니다")
                 await message.channel.send("<@" + str(message.author.id) + "> 님의 로또 : " + str(lotto_List))
                 return None
-        with open("Lotto.txt", "a") as f:
-            f.write(str(message.author.id) + " " + lotto + "\n", f)
-            await message.channel.send(lotto + "\n로또를 입력했습니다")
-            with open("Lotto.pkl", "ab") as f:
-                pickle.dump([str(message.author.id) + "Count" , count + 1] , f)
+        lotto_List.append(lotto)
+        collection.update_one({"_id": message.author.id}, {"$set": {"_id": message.author.id, "Count": count + 1, "lotto": lotto_List}},upsert=True)
+        await message.channel.send(lotto + "\n로또를 입력했습니다")
+        return None
+
     if lotto_Talk[1] == "확인":
         await message.channel.send(str(message.author.name)+ " 님의 로또 : \n" + str(lotto_List))
         return None
+
     if lotto_Talk[1] == "전체":
-        lottoText = ""
-        lottos = []
-        with open("Lotto.txt", 'r') as f:
-            for line in f:
-                User = client.get_user(int(line[:18]))
-                for l in lottos:
-                    if l.startswith(User.name):
-                        lottos[lottos.index(l)] += ", [" + str(line[19:25]) + "]"
-                        break
-                else:
-                    lottos.append(User.name + " : [" + str(line[19:25]) + "]")
-            for i in range(0, len(lottos)):
-                lottoText += lottos[i] + "\n"
         embed = discord.Embed(title="로또 전체", colour=discord.Colour.red())
-        embed.add_field(name="로또", value= lottoText, inline=False)
         embed.set_footer(text="1등하구싶다")
+        f = collection.find()
+        for line in f:
+            User = client.get_user(int(line.get("_id")))
+            embed.add_field(name=User.display_name, value= collection.find({"_id" : line.get("_id")})[0].get("lotto"), inline=False)
         await message.channel.send(embed=embed)
 
 async def Caution(message, talk):
