@@ -436,7 +436,7 @@ async def on_message(message):
 
 async def Lotto(message, talk):
     lotto_Talk = talk.split(" ")
-    collection = db.Lotto
+    collection = db.Point
     if lotto_Talk[1] == "초기화":
         all = collection.find()
         for x in all:
