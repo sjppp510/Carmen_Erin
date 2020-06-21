@@ -29,7 +29,9 @@ async def on_message(message):
     if message.author.bot:
         return None
     collection = db.Point
-    collection.update_one({"_id": message.author.id}, {"$setOnInsert": {"Lotto" : [] , "Count" : 0, "Point" : 0}}, upsert=True)
+    collection.update_one({"_id": message.author.id}, {"$setOnInsert": {"!name" : message.author.display_name, "lotto" : [] , "count" : 0, "point" : 0}}, upsert=True)
+    collection.update_one({"_id": message.author.id}, {"$set": {"!name": message.author.display_name}},upsert=True)
+    collection.update_one({"_id": message.author.id}, {"$inc": {"point": random.randrange(0, 5)}})
 
     if not(message.content.startswith(prefix)):
         return None
@@ -571,66 +573,28 @@ async def Caution(message, talk):
 
 async def Point(message, talk):
     point_Talk = talk.split(" ")
+    collection = db.Point
     if len(point_Talk) < 2:
-        with open("Point.pkl", "rb") as f:
-            datalist = []
-            while True:
-                try:
-                    data = pickle.load(f)
-                except EOFError:
-                    break
-                datalist.append(data)
-            datalist = dict(datalist)
-            point = datalist.get(message.author.id)
-            if point == None:
-                point = 0
-            embed = discord.Embed(title=message.author.display_name, colour=discord.Colour.red())
-            embed.add_field(name="포인트", value="{0} 포인트".format(point), inline=False)
-            await message.channel.send(embed=embed)
-            return None
+        point = collection.find({"_id": message.author.id})[0].get("point")
+        embed = discord.Embed(title=message.author.display_name, colour=discord.Colour.red())
+        embed.add_field(name="포인트", value="{0} 포인트".format(point), inline=False)
+        await message.channel.send(embed=embed)
+        return None
 
     if point_Talk[1].startswith("<@"):
         User_ID = int(re.findall("\d+", point_Talk[1])[0])
-        with open("Point.pkl", "rb") as f:
-            datalist = []
-            while True:
-                try:
-                    data = pickle.load(f)
-                except EOFError:
-                    break
-                datalist.append(data)
-            datalist = dict(datalist)
-            point = datalist.get(User_ID)
-            if point == None:
-                point = 0
-            embed = discord.Embed(title=client.get_user(User_ID).display_name, colour=discord.Colour.red())
-            embed.add_field(name="포인트", value="{0} 포인트".format(point), inline=False)
-            await message.channel.send(embed=embed)
-            return None
+        point = collection.find({"_id": User_ID})[0].get("point")
+        embed = discord.Embed(title=client.get_user(User_ID).display_name, colour=discord.Colour.red())
+        embed.add_field(name="포인트", value="{0} 포인트".format(point), inline=False)
+        await message.channel.send(embed=embed)
+        return None
 
     if point_Talk[1] == "지급":
         if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
             await message.channel.send("권한이 없어")
             return None
         User_ID = int(re.findall("\d+", point_Talk[2])[0])
-        datalist = []
-        with open("Point.pkl", "rb") as f:
-            while True:
-                try:
-                    data = pickle.load(f)
-                except EOFError:
-                    break
-                datalist.append(data)
-        datalist = dict(datalist)
-        try:
-            point = datalist.get(User_ID)
-        except TypeError:
-            point = 0
-            pass
-        with open("Point.pkl", "ab") as f:
-            if point == None:
-                point = 0
-            pickle.dump([User_ID , point + int(point_Talk[3])], f)
+        collection.update_one({"_id": message.author.id}, {"$inc" : {"point" : int(point_Talk[3])}})
         await message.channel.send("{0}에게 {1}포인트 지급했어".format(client.get_user(User_ID).name, int(point_Talk[3])))
         return None
 
@@ -639,77 +603,29 @@ async def Point(message, talk):
             await message.channel.send("권한이 없어")
             return None
         User_ID = int(re.findall("\d+", point_Talk[2])[0])
-        datalist = []
-        with open("Point.pkl", "rb") as f:
-            while True:
-                try:
-                    data = pickle.load(f)
-                except EOFError:
-                    break
-                datalist.append(data)
-            datalist = dict(datalist)
-        with open("Point.pkl", "ab") as f:
-            point = datalist.get(User_ID)
-            if point == None:
-                point = 0
-            point -= int(point_Talk[3])
-            if point < 0:
-                point = 0
-            pickle.dump([User_ID, point], f)
+        collection.update_one({"_id": User_ID}, {"$inc": {"point": -int(point_Talk[3])}})
         await message.channel.send("{0}에게 {1}포인트를 반환했어".format(client.get_user(User_ID).name, point_Talk[3]))
         return None
 
     if point_Talk[1] == "선물":
         User_ID = int(re.findall("\d+", point_Talk[2])[0])
-        if User_ID == message.author.id:
-            await message.channel.send("너가 너한테 선물주게..?")
-            return None
-        datalist = []
-        with open("Point.pkl", "rb") as f:
-            while True:
-                try:
-                    data = pickle.load(f)
-                except EOFError:
-                    break
-                datalist.append(data)
-            datalist = dict(datalist)
-        if datalist.get(message.author.id) == None or datalist.get(message.author.id) >= int(point_Talk[3]):
+        User = collection.find({"_id": User_ID})
+        if collection.find({"_id" : message.author.id})[0].get("point") >= int(point_Talk[3]):
             await message.channel.send("포인트가 부족해")
             return None
 
-        with open("Point.pkl", "ab") as f:
-            point1 = datalist.get(User_ID)
-            if point1 == None:
-                point1 = 0
-            pickle.dump([User_ID , point1 + int(point_Talk[3])], f)
-            point2 = datalist.get(message.author.id)
-            if point2 == None:
-                point2 = 0
-            pickle.dump([message.author.id ,  point2 - int(point_Talk[3])], f)
+        collection.update_one({"_id" : message.author.id}, {"$inc" : {"point" : - int(point_Talk[3])}})
+        collection.update_one({"_id": User_ID}, {"$inc": {"point": int(point_Talk[3])}})
         await message.channel.send("{0}에게 {1}포인트를 선물했어".format(client.get_user(User_ID).name, point_Talk[3]))
         return None
 
     if point_Talk[1] == "순위":
-        datalist = []
-        with open("Point.pkl", "rb") as f:
-            while True:
-                try:
-                    data = pickle.load(f)
-                except EOFError:
-                    break
-                datalist.append(data)
-            datalist = dict(datalist)
-        sdict = sorted(datalist.items(), reverse=True, key=operator.itemgetter(1))
+        point_List = collection.find().sort([("point" , -1)])
         embed = discord.Embed(title="포인트 순위", colour=discord.Colour.red())
-        ranking = 1
-        rank = ""
-        for i in sdict:
-            if i[1] == 0:
-                continue
-            member = message.guild.get_member(i[0])
-            rank += "{0}. {1}포인트 - {2}\n".format(ranking , str(i[1]), member.display_name)
-            ranking += 1
-        embed.add_field(name="(포인트) - (유저)", value=rank, inline=False)
+        rank = 1
+        for i in point_List:
+            embed.add_field(name=str(rank) + "등 " + i.get("!name"), value=str(i.get("point")) + " 포인트", inline=False)
+            rank += 1
         await message.channel.send(embed=embed)
         return None
 
