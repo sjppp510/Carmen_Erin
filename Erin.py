@@ -6,6 +6,7 @@ import pickle
 import re
 import operator
 import asyncio
+from pymongo import MongoClient
 from discord.ext import tasks
 import os
 
