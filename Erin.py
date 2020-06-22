@@ -22,6 +22,7 @@ async def on_ready():
     print(client.user.id)
     print("ready")
     game = discord.Game("베타테스트")
+    Daily.start()
     await client.change_presence(status=discord.Status.online, activity=game)
 
 @client.event
@@ -751,7 +752,11 @@ async def Daily():
     utcnow = datetime.datetime.utcnow()
     time_gap = datetime.timedelta(hours=9)
     now = utcnow + time_gap
-    return None
+    if now.hour == 0:
+        collection = db.Point
+        users = collection.find()
+        for i in users:
+            collection.update_one(i , {"$set" : {"count" : 0, "daily" : False}})
 
 async def Help(message):
     embed = discord.Embed(title= "에린이 도움말",colour=discord.Colour.red())
