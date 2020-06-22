@@ -300,7 +300,7 @@ async def on_message(message):
         count = user.get("dailyCount")
         point = random.randrange(10, 300)
         pointmsg = str(point)
-        if count == None:
+        if count == 0:
             count = 1
         elif count % 50 == 0:
             point += 1000
