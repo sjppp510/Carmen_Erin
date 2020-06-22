@@ -291,22 +291,11 @@ async def on_message(message):
         return None
 
     if talk.startswith("출석"):
-        user_ID = message.author.id
-        with open("Daily.txt", 'r') as f:
-            for line in f:
-                if line.startswith(str(user_ID)):
-                    await message.channel.send("이미 출석 했어")
-                    return None
-        dailylist = []
-        with open("DailyCount.pkl", 'rb') as f:
-            while True:
-                try:
-                    data = pickle.load(f)
-                except EOFError:
-                    break
-                dailylist.append(data)
-            dailylist = dict(dailylist)
-        count = dailylist.get(user_ID)
+        user = collection.find({"_id" : message.author.id})[0]
+        if user.get("daily"):
+            await message.channel.send("이미 출석했어")
+        
+        count = user.get("dailyCount")
         point = random.randrange(10, 300)
         pointmsg = str(point)
         if count == None:
@@ -317,29 +306,12 @@ async def on_message(message):
         elif count % 10 == 0:
             point += 100
             pointmsg += " + 100(%d0일 누적)" % (count / 10)
-        with open("Point.pkl", "rb") as f:
-            datalist = []
-            while True:
-                try:
-                    data = pickle.load(f)
-                except EOFError:
-                    break
-                datalist.append(data)
-            datalist = dict(datalist)
-            user_point = datalist.get(message.author.id)
-            if user_point == None:
-                user_point = 0
-        with open("Point.pkl", "ab") as f:
-            pickle.dump([user_ID, point + user_point], f)
-        with open("Daily.txt", 'a') as f:
-            f.write(str(user_ID) + "\n")
-        with open("DailyCount.pkl", 'ab') as f:
-            pickle.dump([user_ID, count + 1], f)
+        collection.update_one({"_id" : message.author.id}, {"$inc" : {"point" : point, "dailyCount" : 1, "daily" : True}})
 
         embed = discord.Embed(title="%-6s" % message.author.display_name, colour=discord.Colour.red())
         embed.add_field(name="포인트", value=pointmsg, inline=False)
         embed.add_field(name="출석일수", value=count, inline=False)
-        embed.add_field(name="총포인트", value=point+user_point, inline=False)
+        embed.add_field(name="총포인트", value=user.get("point"), inline=False)
         await message.channel.send(embed=embed)
         return None
 
@@ -575,6 +547,7 @@ async def Caution(message, talk):
 async def Point(message, talk):
     point_Talk = talk.split(" ")
     collection = db.Point
+    
     if len(point_Talk) < 2:
         point = collection.find({"_id": message.author.id})[0].get("point")
         embed = discord.Embed(title=message.author.display_name, colour=discord.Colour.red())
@@ -621,7 +594,7 @@ async def Point(message, talk):
         return None
 
     if point_Talk[1] == "순위":
-        point_List = collection.find().sort([("point" , -1)])
+        point_List = collection.find().sort([("point" , -1)]).limit(10)
         embed = discord.Embed(title="포인트 순위", colour=discord.Colour.red())
         rank = 1
         for i in point_List:
