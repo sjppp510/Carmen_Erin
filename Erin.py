@@ -757,6 +757,8 @@ async def Daily():
         collection = db.Point
         users = collection.find()
         for i in users:
+            if not i.get("daily"):
+                collection.update_one(i , {"$set" : {"dailyCount" : 0}})
             collection.update_one(i , {"$set" : {"count" : 0, "daily" : False}})
 
 async def Help(message):
