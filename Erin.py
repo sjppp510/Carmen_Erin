@@ -300,15 +300,14 @@ async def on_message(message):
         count = user.get("dailyCount")
         point = random.randrange(10, 300)
         pointmsg = str(point)
-        if count == 0:
-            count = 1
-        elif count % 50 == 0:
+        count += 1
+        if count % 50 == 0:
             point += 1000
             pointmsg += " + 1000(%d0일 누적)" % ((count / 50) * 5)
         elif count % 10 == 0:
             point += 100
             pointmsg += " + 100(%d0일 누적)" % (count / 10)
-        collection.update_one({"_id" : message.author.id}, {"$inc" : {"point" : point, "dailyCount" : 1}, "$set" : {"daily" : True}})
+        collection.update_one({"_id" : message.author.id}, {"$inc" : {"point" : point, "dailyCount" : count}, "$set" : {"daily" : True}})
 
         embed = discord.Embed(title="%-6s" % message.author.display_name, colour=discord.Colour.red())
         embed.add_field(name="포인트", value=pointmsg, inline=False)
