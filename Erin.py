@@ -307,7 +307,7 @@ async def on_message(message):
         elif count % 10 == 0:
             point += 100
             pointmsg += " + 100(%d0일 누적)" % (count / 10)
-        collection.update_one({"_id" : message.author.id}, {"$inc" : {"point" : point, "dailyCount" : count}, "$set" : {"daily" : True}})
+        collection.update_one({"_id" : message.author.id}, {"$inc" : {"point" : point, "dailyCount" : 1}, "$set" : {"daily" : True}})
 
         embed = discord.Embed(title="%-6s" % message.author.display_name, colour=discord.Colour.red())
         embed.add_field(name="포인트", value=pointmsg, inline=False)
