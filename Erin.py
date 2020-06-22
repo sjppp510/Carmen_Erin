@@ -30,9 +30,9 @@ async def on_message(message):
     if message.author.bot:
         return None
     collection = db.Point
-    collection.update_one({"_id": message.author.id}, {"$setOnInsert": {"!name" : message.author.display_name, "lotto" : [] , "count" : 0, "point" : 0, "daily" : False, "dailyCount" : 0, "caution" : []}}, upsert=True)
-    collection.update_one({"_id": message.author.id}, {"$set": {"!name": message.author.display_name}},upsert=True)
     if message.guild.name == "『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝":
+        collection.update_one({"_id": message.author.id}, {"$setOnInsert": {"!name" : message.author.display_name, "lotto" : [] , "count" : 0, "point" : 0, "daily" : False, "dailyCount" : 0, "caution" : []}}, upsert=True)
+        collection.update_one({"_id": message.author.id}, {"$set": {"!name": message.author.display_name}},upsert=True)
         collection.update_one({"_id": message.author.id}, {"$inc": {"point": random.randrange(0, 5)}})
 
     if not(message.content.startswith(prefix)):
