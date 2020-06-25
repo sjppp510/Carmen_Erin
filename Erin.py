@@ -585,7 +585,7 @@ async def Point(message, talk):
     if point_Talk[1] == "선물":
         User_ID = int(re.findall("\d+", point_Talk[2])[0])
         User = collection.find({"_id": User_ID})
-        if collection.find({"_id" : message.author.id})[0].get("point") >= int(point_Talk[3]):
+        if collection.find({"_id" : message.author.id})[0].get("point") <= int(point_Talk[3]):
             await message.channel.send("포인트가 부족해")
             return None
 
