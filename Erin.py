@@ -765,9 +765,11 @@ async def Help(message):
     embed.add_field(name="로또", value="에린아 로또 랜덤 <숫자> : 로또를 <숫자>번 랜덤으로 뽑습니다.\n"
                                      "에린아 로또 선택 <숫자> : <숫자> 번호 로또를 구매합니다?\n"
                                      "에린아 로또 확인 : 본인의 로또 번호를 확인합니다", inline=False)
-    embed.set_footer(text="셋푸터")
+    embed.add_field(name="포인트", value="에린아 포인트 : 자신의 포인트를 확인합니다.\n"
+                                     "에린아 출석 : 한번 출석에 10~300의 포인트를 받습니다. 누적되면 추가로 포인트를 얻습니다.\n", inline=False)
+    embed.add_field(name="기타 기능", value="에린아 삭제 : 현재 채널에서 <시간>시간 전 ~ 현재 까지의 자신이 쓴 글을 삭제합니다\n", inline=False)
     await message.channel.send(embed=embed)
-    return None
+    return
 
 access_token = os.environ["BOT_TOKEN"]
 client.run(access_token)
