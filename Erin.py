@@ -368,7 +368,7 @@ async def on_message(message):
             time_gap = datetime.timedelta(hours=1)
         now = utcnow - time_gap
         await message.add_reaction("⏳")
-        messages = await message.channel.history(limit=None, after=now, before=utcnow, oldest_first=False).flatten()
+        messages = await message.channel.history(limit=None, after=now, before=utcnow, oldest_first=True).flatten()
         for m in messages:
             if m.author == message.author:
                 if m.content.startswith("에린아 삭제") or m.content.startswith("에린아 청소"):
