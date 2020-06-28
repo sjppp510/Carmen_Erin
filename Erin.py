@@ -752,7 +752,7 @@ async def Daily():
     utcnow = datetime.datetime.utcnow()
     time_gap = datetime.timedelta(hours=9)
     now = utcnow + time_gap
-    if now.hour == 0:
+    if now.hour == 6:
         collection = db.Point
         users = collection.find()
         for i in users:
