@@ -754,12 +754,12 @@ async def Daily():
     now = utcnow + time_gap
     if now.hour == 6:
         collection = db.Point
-        await discord.utils.get(client.get_all_channels(),  name="봇-test").send("에린 초기화")
-        users = collection.find()
+        users = collection.find({"daily" : False})
         for i in users:
-            if not i.get("daily"):
-                collection.update_one(i , {"$set" : {"dailyCount" : 0}})
+            collection.update_one(i, {"$set": {"dailyCount": 0}})
             collection.update_one(i , {"$set" : {"count" : 0, "daily" : False}})
+        collection = db.State
+        collection.update_one({"_id": 1}, {"$set" :{"update": now}}, upsert=True)
 
 async def Help(message):
     embed = discord.Embed(title= "에린이 도움말",colour=discord.Colour.red())
