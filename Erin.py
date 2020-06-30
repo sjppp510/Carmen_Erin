@@ -756,7 +756,8 @@ async def Daily():
         collection = db.Point
         users = collection.find({"daily" : False})
         for i in users:
-            collection.update_one(i, {"$set": {"dailyCount": 0}})
+            if not i.get("daily")
+                collection.update_one(i, {"$set": {"dailyCount": 0}})
             collection.update_one(i , {"$set" : {"count" : 0, "daily" : False}})
         collection = db.State
         collection.update_one({"_id": 1}, {"$set" :{"update": now}}, upsert=True)
