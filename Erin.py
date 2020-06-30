@@ -754,6 +754,7 @@ async def Daily():
     now = utcnow + time_gap
     if now.hour == 6:
         collection = db.Point
+        await discord.utils.get(client.get_all_channels(),  name="봇-test").send("에린 초기화")
         users = collection.find()
         for i in users:
             if not i.get("daily"):
