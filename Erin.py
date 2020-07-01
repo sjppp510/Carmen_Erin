@@ -47,23 +47,19 @@ async def on_message(message):
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("뭐해"):
-        Chat = ["니 생각", "유튜브 봐", "내 생각", "그냥 있어"]
+        Chat = ["너 생각", "유튜브 봐", "내 생각", "그냥 있어"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("심심해"):
         Chat = ["내 생각 하면 되지", "나두", "나랑 놀자"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
-    if talk.startswith("바보"):
+    if "바보" in ''.join(talk) or "멍청이" in ''.join(talk):
         Chat = [";;", "너는?", "멍청이", "너가 더", "응."]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
-    if talk.startswith("멍청이"):
-        Chat = [";;", "너는?", "바보", "너가 더", "응."]
-        await message.channel.send(Chat [random.randrange(0, len(Chat))])
-        return None
     if talk.startswith("보고싶었어"):
-        Chat = ["나도", "나도 보고 싶었어", "!"]
+        Chat = ["나도", "나도 보고 싶었어", "ㅇ0ㅇ!"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("사랑해"):
@@ -135,6 +131,7 @@ async def on_message(message):
         return None
     if talk.startswith("이름"):
         await message.channel.send("'아름다운' 이라는 뜻을 가진 라틴어 '에일린' 에서 따왔어")
+        return None
     if talk.startswith("카르멘"):
         Chat = ["rpg게임을 모티브로한 멋있는 친목 서버지" , "지금 여기 잖아"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
@@ -217,6 +214,7 @@ async def on_message(message):
     if "푸" in ''.join(talk) and "딩" in ''.join(talk):
         Chat = ["🍮", "푸딩은 맛나"]
         await message.channel.send(Chat[random.randrange(0, len(Chat))])
+        return None
 
     if talk.startswith("노라조"):
         Chat = ["https://www.youtube.com/watch?v=2CGc9Ly11yo", "https://www.youtube.com/watch?v=ezwgRTy8R8U",
