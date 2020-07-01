@@ -754,7 +754,7 @@ async def Daily():
     now = utcnow + time_gap
     if now.hour == 6:
         collection = db.Point
-        users = collection.find({"daily" : False})
+        users = collection.find()
         for i in users:
             if not i.get("daily"):
                 collection.update_one(i, {"$set": {"dailyCount": 0}})
