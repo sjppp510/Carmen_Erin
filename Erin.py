@@ -2,7 +2,6 @@ import discord
 import random
 import datetime
 import time
-import pickle
 import re
 import operator
 import asyncio
@@ -41,18 +40,6 @@ async def on_message(message):
     talk = message.content[len(prefix):]
 
     if talk.startswith("초기화"):
-        with open("Lotto.pkl", 'w') as f:
-            f.write("")
-        with open("Lotto.txt", 'w') as f:
-            f.write("")
-        with open("Caution.txt", 'w') as f:
-            f.write("")
-        with open("Point.pkl", 'w') as f:
-            f.write("")
-        with open("Daily.txt", 'w') as f:
-            f.write("")
-        with open("DailyCount.pkl", 'w') as f:
-            f.write("")
         await message.channel.send("초기화 되었습니다")
         return None
     if talk.startswith("안녕"):
