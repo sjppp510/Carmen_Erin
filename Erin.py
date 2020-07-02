@@ -345,7 +345,7 @@ async def on_message(message):
         await message.channel.send(message.author.mention + "님의 ID는 \n" + "```" + str(message.author.id) + "```")
         return None
     
-    if talk.startswith("삭제") or talk.startswith("청소") or talk.startswith(""):
+    if talk.startswith("삭제") or talk.startswith("청소") or talk.startswith("지워"):
         utcnow = datetime.datetime.utcnow()
         try:
             time_gap = datetime.timedelta(hours=int(talk.split(" ")[1]))
