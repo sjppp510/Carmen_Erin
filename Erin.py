@@ -161,7 +161,7 @@ async def on_message(message):
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("시낚") or talk.startswith("시나기") or talk.startswith("시간낚시꾼"):
-        Chat = ["대마법사셔", "카르멘 학원의 고독한 어둠의 다크루시퍼.."]
+        Chat = ["군대간 친구 자리를 지키는 1년 임시 기사단장"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("개발팀"):
