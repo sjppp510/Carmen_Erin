@@ -118,7 +118,7 @@ async def on_message(message):
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("성별"):
-        Chat = ["나 여자같아 남자같아?", "당연히 여자 아냐?", "그건 물어봐야 아니?"]
+        Chat = ["나 여자같아 남자같아?", "당연히 여자 아냐?", "그 물어봐야 아니?"]
         await message.channel.send(Chat[random.randrange(0, len(Chat))])
         return None
     if talk.startswith("뭐 먹지?"):
