@@ -179,12 +179,25 @@ async def on_message(message):
         Chat = ["우리 게임 tutorial진행해주는 팀!"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
-    if talk.startswith("디자인팀"):
-        Chat = ["우리 게임에 쓰이는 모든 그림을 맡아주는 팀!"]
+    if talk.startswith("밤연"):
+        Chat = ["귀여우시고 목소리 예쁘신 안내팀!"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("기획팀"):
         Chat = ["우리 서버 이벤트 기획하는 팀!"]
+        await message.channel.send(Chat [random.randrange(0, len(Chat))])
+        return None
+    if talk.startswith("태건"):
+        await message.channel.send("엄")
+        time.sleep(1)
+        await message.channel.send("준")
+        time.sleep(1)
+        await message.channel.send("식")
+        time.sleep(1)
+        await message.channel.send("화이팅")
+        return None
+    if talk.startswith("디자인팀"):
+        Chat = ["우리 게임에 쓰이는 모든 그림을 맡아주는 팀!"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("라호"):
@@ -199,10 +212,7 @@ async def on_message(message):
         Chat = ["소품 위주로 그려주시는 완전 예쁜 디자인팀 겸 안내팀!이었었는데..."]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
-    if talk.startswith("밤연"):
-        Chat = ["귀여우시고 목소리 예쁘신 안내팀!"]
-        await message.channel.send(Chat [random.randrange(0, len(Chat))])
-        return None
+    
     if talk.startswith("가온"):
         Chat = ["금수저"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
