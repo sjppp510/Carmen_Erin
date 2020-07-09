@@ -194,7 +194,7 @@ async def on_message(message):
         time.sleep(1)
         await message.channel.send("식")
         time.sleep(1)
-        await message.channel.send("화이팅")
+        await message.channel.send("화이팅!")
         return None
     if talk.startswith("디자인팀"):
         Chat = ["우리 게임에 쓰이는 모든 그림을 맡아주는 팀!"]
