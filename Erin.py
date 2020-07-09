@@ -152,11 +152,7 @@ async def on_message(message):
         Chat = ["1년 임시 대신관이야", "엄청 귀여우셔"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
-    if talk.startswith("바다나라"):
-        Chat = ["대마법사셔", "건들면 뭅니다"]
-        await message.channel.send(Chat[random.randrange(0, len(Chat))])
-        return None
-    if talk.startswith("만두"):
+    if talk.startswith("한울"):
         Chat = ["기사단장이지, 국방의 의무를 다하시는 중","^^7"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
@@ -169,7 +165,7 @@ async def on_message(message):
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("상런쳐"):
-        await message.channel.send("난 에린이 아빠에요")
+        await message.channel.send("에린이 아빠에요")
         time.sleep(1)
         await message.channel.send("안녕해요")
         time.sleep(1)
