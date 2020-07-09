@@ -248,6 +248,10 @@ async def on_message(message):
         Chat = ["🍮", "푸딩은 맛나"]
         await message.channel.send(Chat[random.randrange(0, len(Chat))])
         return None
+    if talk.startswith("몽쉘"):
+        Chat = ["몽쉘 맛있지"]
+        await message.channel.send(Chat [random.randrange(0, len(Chat))])
+        return None
 
     if talk.startswith("노라조"):
         Chat = ["https://www.youtube.com/watch?v=2CGc9Ly11yo", "https://www.youtube.com/watch?v=ezwgRTy8R8U",
