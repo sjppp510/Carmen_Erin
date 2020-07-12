@@ -293,7 +293,7 @@ async def on_message(message):
             temp += i
             await chat.edit(content=temp)
 
-    if talk.startswith("도움말") or talk.startswith("도움말"):
+    if talk.startswith("도움말") or talk.startswith(""):
         await Help(message)
         return None
 
