@@ -780,9 +780,6 @@ async def Sns(message, talk):
                 await i.add_roles(role)
                 count += 1
             new_Channel = await discord.Guild.create_text_channel(message.guild, name=sns_Talk[2],category=category, topic="%s\n팔로워 [%s]\n게시물 [0]" % (sns_Talk[3], str(count)))
-            await new_Channel.send(message.author.mention)
-            await new_Channel.send(role.mention)
-            await message.channel.send("{0}채널을 만들었어".format(sns_Talk[2]))
         except IndexError:
             await message.channel.send("잘못 입력했어\nex)에린아 sns 개설 {채널이름} {소개}")
     return None
