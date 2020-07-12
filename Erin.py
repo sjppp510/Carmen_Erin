@@ -770,6 +770,9 @@ async def on_voice_state_update(member, before, after):
 async def Sns(message, talk):
     sns_Talk = talk.split(" ")
     if sns_Talk[1] == "개설":
+        if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
+            await message.channel.send("권한이 없어")
+            return None
         try:
             category = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS")
             new_Channel = await discord.Guild.create_text_channel(message.guild, name=sns_Talk[2],category=category, topic="%s\n%s\n게시물 [0]" % (sns_Talk[3], "팔로워 [7]")) #수정 팔로워 수 어떻게늘리고 줄이지
