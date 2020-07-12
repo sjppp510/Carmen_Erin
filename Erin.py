@@ -772,11 +772,14 @@ async def Sns(message, talk):
     if sns_Talk[1] == "개설":
         if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
             await message.channel.send("권한이 없어")
-            return None
         try:
             category = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS")
-            new_Channel = await discord.Guild.create_text_channel(message.guild, name=sns_Talk[2],category=category, topic="%s\n%s\n게시물 [0]" % (sns_Talk[3], "팔로워 [7]")) #수정 팔로워 수 어떻게늘리고 줄이지
             role = await message.guild.create_role(name="{0}팔로워".format(sns_Talk[2]), mentionable=True)
+            count = 0
+            for i in message.guild.get_role(731802943011160165).members:
+                await i.add_roles(role)
+                count += 1
+            new_Channel = await discord.Guild.create_text_channel(message.guild, name=sns_Talk[2],category=category, topic="%s\n팔로워 [%s]\n게시물 [0]" % (sns_Talk[3], str(count)))
             await  new_Channel.send(message.author.mention)
             await new_Channel.send(role.mention)
             await message.channel.send("{0}채널을 만들었어".format(sns_Talk[2]))
