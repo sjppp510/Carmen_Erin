@@ -33,6 +33,18 @@ async def on_message(message):
         collection.update_one({"_id": message.author.id}, {"$setOnInsert": {"!name" : message.author.display_name, "lotto" : [] , "count" : 0, "point" : 0, "daily" : False, "dailyCount" : 0, "caution" : []}}, upsert=True)
         collection.update_one({"_id": message.author.id}, {"$set": {"!name": message.author.display_name}},upsert=True)
         collection.update_one({"_id": message.author.id}, {"$inc": {"point": random.randrange(0, 2)}})
+        
+        if message.channel.category.name == "SNS":
+        for i in message.role_mentions:
+            if i.name.startswith(message.channel.name):
+                tmp_topic = re.findall("게시물 \[\d+\]", message.channel.topic)[0]
+                number = int(re.findall("\d+", tmp_topic)[0]) + 1
+                _topic = message.channel.topic.replace(tmp_topic, "게시물 [%s]" % str(number))
+                try:
+                    await message.channel.edit(topic=_topic)
+                except TypeError:
+                    pass
+                return None
 
     if not(message.content.startswith(prefix)):
         return None
