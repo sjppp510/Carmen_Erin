@@ -214,11 +214,8 @@ async def on_message(message):
     if talk.startswith("태건"):
         if (random.randrange(0, 2) == 0):
             await message.channel.send("엄")
-            time.sleep(1)
             await message.channel.send("준")
-            time.sleep(1)
             await message.channel.send("식")
-            time.sleep(1)
             await message.channel.send("화이팅!")
         else:
             await message.channel.send("기획팀이셔")
@@ -226,11 +223,8 @@ async def on_message(message):
     if talk.startswith("근우"):
         if (random.randrange(0, 2) == 0):
             await message.channel.send("엄")
-            time.sleep(1)
             await message.channel.send("준")
-            time.sleep(1)
             await message.channel.send("식")
-            time.sleep(1)
             await message.channel.send("화이팅!")
         else:
             await message.channel.send("기획팀이셔")
