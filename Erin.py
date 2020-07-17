@@ -223,6 +223,18 @@ async def on_message(message):
         else:
             await message.channel.send("기획팀이셔")
         return None
+    if talk.startswith("근우"):
+        if (random.randrange(0, 2) == 0):
+            await message.channel.send("엄")
+            time.sleep(1)
+            await message.channel.send("준")
+            time.sleep(1)
+            await message.channel.send("식")
+            time.sleep(1)
+            await message.channel.send("화이팅!")
+        else:
+            await message.channel.send("기획팀이셔")
+        return None
     if talk.startswith("세라"):
         Chat = ["귀여운 기획팀 분이야!", "세라님 귀엽지", "세라님 섹시하지"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
