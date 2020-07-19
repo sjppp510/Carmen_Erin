@@ -755,6 +755,7 @@ async def on_voice_state_update(member, before, after):
                 if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="check in").members:
                     newChannel = await member.guild.create_voice_channel("제목을 입력해주세요.")
                     await newChannel.edit(category=after.channel.category)
+                    await newChannel.set_permissions(member.guild.get_role(629891426678997002), view_channel=False)
                     await newChannel.set_permissions(member, manage_channels=True)
                     await member.move_to(newChannel)
             elif after.channel.name == "private check in":
