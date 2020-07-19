@@ -704,6 +704,14 @@ async def Buy(message, talk):
 async def on_reaction_add(reaction, user):
     if user.bot:
         return None
+    
+    await reaction.message.channel.send(str(reaction.emoji))
+    if reaction.message.content.startswith():
+        follow = reaction.message.content.split("\n")
+        category = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS")
+        for i in category.channels:
+            if str(reaction.emoji)
+        
     count = int(reaction.message.embeds[0].author.name[0])
     if reaction.emoji == "◀️":
         count -= 1
