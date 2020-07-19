@@ -699,19 +699,77 @@ async def Buy(message, talk):
         return None
     return None
 
+async def Sns(message, talk):
+    sns_Talk = talk.split(" ")
+    if sns_Talk[1] == "개설":
+        if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
+            await message.channel.send("권한이 없어")
+        try:
+            category = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS")
+            role = await message.guild.create_role(name="{0}팔로워".format(sns_Talk[2]), mentionable=True)
+            count = 0
+            for i in message.guild.get_role(731802943011160165).members:
+                await i.add_roles(role)
+                count += 1
+            topic = ""
+            try:
+                i = 3
+                while True:
+                    topic += sns_Talk[i] + " "
+                    i+= 1
+            except IndexError:
+                pass
+            new_Channel = await discord.Guild.create_text_channel(message.guild, name=sns_Talk[2],category=category, topic="%s\n팔로워 [%s]\n게시물 [0]" % (topic, str(count)))
+        except IndexError:
+            await message.channel.send("잘못 입력했어\nex)에린아 sns 개설 {채널이름} {소개}")
+    return None
 
+@client.event
+async def on_voice_state_update(member, before, after):
+    try:
+        if member.voice.channel.category.name == "여관":
+            time.sleep(2)
+            if after.channel.name == "check in":
+                if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="check in").members:
+                    newChannel = await member.guild.create_voice_channel("제목을 입력해주세요.")
+                    await newChannel.edit(category=after.channel.category)
+                    await newChannel.set_permissions(member.guild.get_role(629891426678997002), view_channel=False)
+                    await newChannel.set_permissions(member, manage_channels=True)
+                    await member.move_to(newChannel)
+            elif after.channel.name == "private check in":
+                if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="private check in").members:
+                    newChannel = await member.guild.create_voice_channel("비밀방")
+                    await newChannel.edit(category=after.channel.category)
+                    await newChannel.set_permissions(member.guild.get_role(629963963446198292), view_channel=False)
+                    await newChannel.set_permissions(member, manage_channels=True)
+                    await member.move_to(newChannel)
+    except AttributeError:
+        None
+    try:
+        if before.channel.category.name == "여관":
+            if before.channel.name != "check in" and len(before.channel.members) == 0 and before.channel.name != "private check in":
+                await before.channel.delete()
+    except AttributeError:
+        None
+
+async def Reaction(reaction, user, i):
+    if reaction.message.content.startswith("SNSASD"):
+        follow = reaction.message.content.split("\n")
+        category = discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name="SNS")
+        for i in follow:
+            i = i.split(":")
+            if str(reaction.emoji) == i[0]:
+                if i:
+                    user.add_roles(user.guild.get_role(int(re.findall("\d+", i[1])[0])))
+                else:
+                    user.remove_roles(user.guild.get_role(int(re.findall("\d+", i[1])[0])))
+                    
 @client.event
 async def on_reaction_add(reaction, user):
     if user.bot:
         return None
     
-    await reaction.message.channel.send(str(reaction.emoji))
-    if reaction.message.content.startswith():
-        follow = reaction.message.content.split("\n")
-        category = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS")
-        for i in category.channels:
-            if str(reaction.emoji)
-        
+    Reaction(reaction, user, True)    
     count = int(reaction.message.embeds[0].author.name[0])
     if reaction.emoji == "◀️":
         count -= 1
@@ -751,60 +809,11 @@ async def on_reaction_add(reaction, user):
         await reaction.message.clear_reactions()
         await reaction.message.add_reaction("◀️")
         await reaction.message.add_reaction("▶️")
-
     return None
 
 @client.event
-async def on_voice_state_update(member, before, after):
-    try:
-        if member.voice.channel.category.name == "여관":
-            time.sleep(2)
-            if after.channel.name == "check in":
-                if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="check in").members:
-                    newChannel = await member.guild.create_voice_channel("제목을 입력해주세요.")
-                    await newChannel.edit(category=after.channel.category)
-                    await newChannel.set_permissions(member.guild.get_role(629891426678997002), view_channel=False)
-                    await newChannel.set_permissions(member, manage_channels=True)
-                    await member.move_to(newChannel)
-            elif after.channel.name == "private check in":
-                if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="private check in").members:
-                    newChannel = await member.guild.create_voice_channel("비밀방")
-                    await newChannel.edit(category=after.channel.category)
-                    await newChannel.set_permissions(member.guild.get_role(629963963446198292), view_channel=False)
-                    await newChannel.set_permissions(member, manage_channels=True)
-                    await member.move_to(newChannel)
-    except AttributeError:
-        None
-    try:
-        if before.channel.category.name == "여관":
-            if before.channel.name != "check in" and len(before.channel.members) == 0 and before.channel.name != "private check in":
-                await before.channel.delete()
-    except AttributeError:
-        None
-
-async def Sns(message, talk):
-    sns_Talk = talk.split(" ")
-    if sns_Talk[1] == "개설":
-        if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
-            await message.channel.send("권한이 없어")
-        try:
-            category = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS")
-            role = await message.guild.create_role(name="{0}팔로워".format(sns_Talk[2]), mentionable=True)
-            count = 0
-            for i in message.guild.get_role(731802943011160165).members:
-                await i.add_roles(role)
-                count += 1
-            topic = ""
-            try:
-                i = 3
-                while True:
-                    topic += sns_Talk[i] + " "
-                    i+= 1
-            except IndexError:
-                pass
-            new_Channel = await discord.Guild.create_text_channel(message.guild, name=sns_Talk[2],category=category, topic="%s\n팔로워 [%s]\n게시물 [0]" % (topic, str(count)))
-        except IndexError:
-            await message.channel.send("잘못 입력했어\nex)에린아 sns 개설 {채널이름} {소개}")
+async def on_reaction_remove(reaction, user):
+    Reaction(reaction, user, False)
     return None
 
 @tasks.loop(seconds=60*60)
