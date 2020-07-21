@@ -418,6 +418,21 @@ async def on_message(message):
         await message.add_reaction("✅")
         return None
     
+    if talk.startswith("팔로우생성"):
+        await discord.utils.get(client.get_all_channels(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", name="봇-test").send(talk[6:])
+        return None
+    if talk.startswith("수정"):
+        if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
+            await message.channel.send("권한이 없어")
+        messages = await message.channel.history(limit=100, oldest_first=False).flatten()
+        for m in messages:
+            print(m.content)
+            if m.author.bot:
+                await m.edit(content=talk[2:])
+                await message.add_reaction("✅")
+                return None
+        return None
+    
     if talk.startswith("가위바위보"):
         def check(m):
             return m.author == message.author and (m.content == "가위" or m.content == "바위" or m.content == "보")
