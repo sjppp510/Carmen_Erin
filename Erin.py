@@ -424,6 +424,7 @@ async def on_message(message):
     if talk.startswith("수정"):
         if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
             await message.channel.send("권한이 없어")
+            return None
         messages = await message.channel.history(limit=100, oldest_first=False).flatten()
         for m in messages:
             print(m.content)
@@ -719,6 +720,7 @@ async def Sns(message, talk):
     if sns_Talk[1] == "개설":
         if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
             await message.channel.send("권한이 없어")
+            return None
         try:
             category = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS")
             role = await message.guild.create_role(name="{0}팔로워".format(sns_Talk[2]), mentionable=True)
