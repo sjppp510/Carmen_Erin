@@ -752,24 +752,66 @@ async def on_voice_state_update(member, before, after):
     except AttributeError:
         None
 
-async def Reaction(reaction, user, i):
-    if reaction.message.content.startswith("SNSASD"):
-        follow = reaction.message.content.split("\n")
-        category = discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name="SNS")
-        for i in follow:
-            i = i.split(":")
-            if str(reaction.emoji) == i[0]:
-                if i:
-                    user.add_roles(user.guild.get_role(int(re.findall("\d+", i[1])[0])))
+async def Reaction(payload, user, msg, tf):
+    if msg.content.startswith("__SNS 팔로우__"):
+        if str(payload.emoji) == "👥": #올팔로우
+            follow = msg.content.split("\n")
+            follow = follow[1:]
+            for i in follow:
+                i = i.split(":")
+                role = user.guild.get_role(int(re.findall("\d+", i[1])[0]))
+                snsChannel = discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name=role.name.split("팔로워")[0])
+                tmp_topic = re.findall("팔로워 \[\d+\]", snsChannel.topic)[0]
+                if tf:
+                    count = int(re.findall("\d+", tmp_topic)[0]) + 1
+                    if role in user.roles:
+                        print("이미 있음")
+                        continue
+                    await user.add_roles(role)
                 else:
-                    user.remove_roles(user.guild.get_role(int(re.findall("\d+", i[1])[0])))
+                    count = int(re.findall("\d+", tmp_topic)[0]) - 1
+                    if not role in user.roles:
+                        print("이미 없음")
+                        continue
+                    await user.remove_roles(role)
+
+                _topic = snsChannel.topic.replace(tmp_topic, "팔로워 [%s]" % str(count))
+                try:
+                    await snsChannel.edit(topic=_topic)
+                except TypeError:
+                    pass
+            return None
+        else:
+            follow = msg.content.split("\n")
+            for i in follow:
+                i = i.split(":")
+                if str(payload.emoji) == i[0]:
+                    role = user.guild.get_role(int(re.findall("\d+", i[1])[0]))
+                    snsChannel = discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name=role.name.split("팔로워")[0])
+                    tmp_topic = re.findall("팔로워 \[\d+\]", snsChannel.topic)[0]
+                    if tf:
+                        count = int(re.findall("\d+", tmp_topic)[0]) + 1
+                        if role in user.roles:
+                            print("이미 있음")
+                            return None
+                        await user.add_roles(role)
+                    else:
+                        count = int(re.findall("\d+", tmp_topic)[0]) - 1
+                        if not role in user.roles:
+                            print("이미 없음")
+                            return None
+                        await user.remove_roles(role)
+
+                    _topic = snsChannel.topic.replace(tmp_topic, "팔로워 [%s]" % str(count))
+                    try:
+                        await snsChannel.edit(topic=_topic)
+                    except TypeError:
+                        pass
                     
 @client.event
 async def on_reaction_add(reaction, user):
     if user.bot:
         return None
-    
-    Reaction(reaction, user, True)    
     count = int(reaction.message.embeds[0].author.name[0])
     if reaction.emoji == "◀️":
         count -= 1
@@ -812,8 +854,20 @@ async def on_reaction_add(reaction, user):
     return None
 
 @client.event
-async def on_reaction_remove(reaction, user):
-    Reaction(reaction, user, False)
+async def on_raw_reaction_add(payload):
+    if payload.member.bot:
+        return None
+    channel = discord.utils.get(client.get_all_channels(), id=payload.channel_id)
+    msg = await channel.fetch_message(payload.message_id)
+    await Reaction(payload, payload.member, msg, True)
+    return None
+
+@client.event
+async def on_raw_reaction_remove(payload):
+    channel = discord.utils.get(client.get_all_channels(), id=payload.channel_id)
+    user = discord.utils.get(client.get_all_members(), id=payload.user_id)
+    msg = await channel.fetch_message(payload.message_id)
+    await Reaction(payload, user, msg, False)
     return None
 
 @tasks.loop(seconds=60*60)
