@@ -21,7 +21,9 @@ async def on_ready():
     print(client.user.id)
     print("ready")
     game = discord.Game("베타테스트")
+    await discord.utils.get(client.get_all_channels(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", name="봇-test").send("게임")
     Daily.start()
+    await discord.utils.get(client.get_all_channels(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", name="봇-test").send("데일리")
     await client.change_presence(status=discord.Status.online, activity=game)
 
 @client.event
