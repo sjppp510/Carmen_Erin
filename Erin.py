@@ -401,7 +401,7 @@ async def on_message(message):
         return None
     
     if talk.startswith("삭제") or talk.startswith("청소") or talk.startswith("지워"):
-       def is_me(m):
+        def is_me(m):
            if m.author == message.author:
                 if m.content.startswith("에린아 삭제") or m.content.startswith("에린아 청소") or m.content.startswith("에린아 지워"):
                     return True
