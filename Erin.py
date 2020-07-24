@@ -402,15 +402,17 @@ async def on_message(message):
     
     if talk.startswith("삭제") or talk.startswith("청소") or talk.startswith("지워"):
         def is_me(m):
-           if m.author == message.author:
-                if m.content.startswith("에린아 삭제") or m.content.startswith("에린아 청소") or m.content.startswith("에린아 지워"):
+            if m.author == message.author:
+                if not m.content.startswith("에린아 삭제") and not m.content.startswith("에린아 청소") and not m.content.startswith("에린아 지워"):
                     return True
         try:
             talk = talk.split(" ")
             _limit = int(talk[1])
-        except IndexError, TypeError:
+        except IndexError or TypeError:
             _limit = 100
-        await channel.purge(limit=_limit, check=is_me)
+        await message.add_reaction("⏳")
+        await message.channel.purge(limit=_limit, check=is_me)
+        await message.clear_reactions()
         await message.add_reaction("✅")
         return None
     
