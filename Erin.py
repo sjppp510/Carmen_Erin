@@ -408,7 +408,9 @@ async def on_message(message):
         try:
             talk = talk.split(" ")
             _limit = int(talk[1])
-        except IndexError or TypeError:
+        except IndexError:
+            _limit = 100
+        except TypeError:
             _limit = 100
         await message.add_reaction("⏳")
         await message.channel.purge(limit=_limit+1, check=is_me)
