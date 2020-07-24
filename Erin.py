@@ -401,20 +401,16 @@ async def on_message(message):
         return None
     
     if talk.startswith("삭제") or talk.startswith("청소") or talk.startswith("지워"):
-        utcnow = datetime.datetime.utcnow()
-        try:
-            time_gap = datetime.timedelta(hours=int(talk.split(" ")[1]))
-        except IndexError:
-            time_gap = datetime.timedelta(hours=1)
-        now = utcnow - time_gap
-        await message.add_reaction("⏳")
-        messages = await message.channel.history(limit=None, after=now, before=utcnow, oldest_first=True).flatten()
-        for m in messages:
-            if m.author == message.author:
+       def is_me(m):
+           if m.author == message.author:
                 if m.content.startswith("에린아 삭제") or m.content.startswith("에린아 청소") or m.content.startswith("에린아 지워"):
-                    continue
-                await m.delete()
-        await message.clear_reactions()
+                    return True
+        try:
+            talk = talk.split(" ")
+            _limit = int(talk[1])
+        except IndexError, TypeError:
+            _limit = 100
+        await channel.purge(limit=_limit, check=is_me)
         await message.add_reaction("✅")
         return None
     
