@@ -408,9 +408,7 @@ async def on_message(message):
         try:
             talk = talk.split(" ")
             _limit = int(talk[1])
-        except IndexError:
-            _limit = 100
-        except TypeError:
+        except (IndexError, ValueError):
             _limit = 100
         await message.add_reaction("⏳")
         await message.channel.purge(limit=_limit+1, check=is_me)
@@ -911,7 +909,7 @@ async def Help(message):
                                      "에린아 출석 : 한번 출석에 10~300의 포인트를 받습니다. 누적되면 추가로 포인트를 얻습니다.\n"
                                      "에린아 순위 : 서버 내 포인트 순위를 확인합니다.\n"
                                      "에린아 선물 <멘션> <포인트> :<멘션>에게 <포인트>만큼 포인트를 선물합니다", inline=False)
-    embed.add_field(name="기타 기능", value="에린아 삭제 : 현재 채널에서 <시간>시간 전 ~ 현재 까지의 자신이 쓴 글을 삭제합니다\n", inline=False)
+    embed.add_field(name="기타 기능", value="에린아 삭제 <숫자>: 현재 채널에서 자신이 쓴 글을 <숫자>개 삭제합니다\n", inline=False)
     await message.channel.send(embed=embed)
     return
 
