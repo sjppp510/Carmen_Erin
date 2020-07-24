@@ -411,7 +411,7 @@ async def on_message(message):
         except IndexError or TypeError:
             _limit = 100
         await message.add_reaction("⏳")
-        await message.channel.purge(limit=_limit, check=is_me)
+        await message.channel.purge(limit=_limit+1, check=is_me)
         await message.clear_reactions()
         await message.add_reaction("✅")
         return None
