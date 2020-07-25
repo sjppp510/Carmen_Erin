@@ -756,8 +756,7 @@ async def on_voice_state_update(member, before, after):
                     await newChannel.set_permissions(member, manage_channels=True)
                     await member.move_to(newChannel)
     except (AttributeError, TypeError):
-        if newChannel:
-            await newChannel.delete()
+        None
     try:
         if before.channel.category.name == "여관":
             if before.channel.name != "check in" and len(before.channel.members) == 0 and before.channel.name != "private check in":
@@ -778,13 +777,11 @@ async def Reaction(payload, user, msg, tf):
                 if tf:
                     count = int(re.findall("\d+", tmp_topic)[0]) + 1
                     if role in user.roles:
-                        print("이미 있음")
                         continue
                     await user.add_roles(role)
                 else:
                     count = int(re.findall("\d+", tmp_topic)[0]) - 1
                     if not role in user.roles:
-                        print("이미 없음")
                         continue
                     await user.remove_roles(role)
 
@@ -805,13 +802,11 @@ async def Reaction(payload, user, msg, tf):
                     if tf:
                         count = int(re.findall("\d+", tmp_topic)[0]) + 1
                         if role in user.roles:
-                            print("이미 있음")
                             return None
                         await user.add_roles(role)
                     else:
                         count = int(re.findall("\d+", tmp_topic)[0]) - 1
                         if not role in user.roles:
-                            print("이미 없음")
                             return None
                         await user.remove_roles(role)
 
