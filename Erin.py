@@ -186,9 +186,9 @@ async def on_message(message):
         return None
     if talk.startswith("상런쳐") or talk.startswith("상런처") or talk.startswith("발사통"):
         await message.channel.send("에린이 아빠에요")
-        time.sleep(1)
+        await asyncio.sleep(1)
         await message.channel.send("안녕해요")
-        time.sleep(1)
+        await asyncio.sleep(1)
         await message.channel.send("반갑다요?")
         return None
     if talk.startswith("Teacat"):
@@ -295,7 +295,7 @@ async def on_message(message):
         msg = await message.channel.send(dance[random.randrange(0, len(dance))])
         i = 0
         while i < 5:
-            time.sleep(0.5)
+            await asyncio.sleep(0.5)
             table = str.maketrans('ㄴㄱ', 'ㄱㄴ')
             await msg.edit(content=msg.content.translate(table))
             i += 1
@@ -743,21 +743,21 @@ async def Sns(message, talk):
 async def on_voice_state_update(member, before, after):
     try:
         if member.voice.channel.category.name == "여관":
-            user = member
             await asyncio.sleep(2)
             if after.channel.name == "check in":
-                if user in discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name="check in").members:
-                    newChannel = await after.category.create_voice_channel("제목을 입력해주세요")
-                    await newChannel.set_permissions(user, manage_channels=True)
-                    await user.move_to(newChannel)
+                if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="check in").members:
+                    newChannel = await after.channel.category.create_voice_channel("제목을 입력해주세요")
+                    await newChannel.set_permissions(member, manage_channels=True)
+                    await member.move_to(newChannel)
             elif after.channel.name == "private check in":
-                if user in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="private check in").members:
-                    newChannel = await user.guild.create_voice_channel("비밀방")
-                    await newChannel.edit(category=after.channel.category)
-                    await newChannel.set_permissions(user.guild.get_role(629963963446198292), view_channel=False)
-                    await newChannel.set_permissions(user, manage_channels=True)
-                    await user.move_to(newChannel)
-    except AttributeError:
+                if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="private check in").members:
+                    newChannel = await after.channel.category.create_voice_channel("비밀방")
+                    await newChannel.set_permissions(member.guild.get_role(629963963446198292), view_channel=False)
+                    await newChannel.set_permissions(member, manage_channels=True)
+                    await member.move_to(newChannel)
+    except (AttributeError, TypeError):
+        if newChannel:
+            await newChannel.delete()
         None
     try:
         if before.channel.category.name == "여관":
