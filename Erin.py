@@ -758,13 +758,12 @@ async def on_voice_state_update(member, before, after):
     except (AttributeError, TypeError):
         if newChannel:
             await newChannel.delete()
-        None
     try:
         if before.channel.category.name == "여관":
             if before.channel.name != "check in" and len(before.channel.members) == 0 and before.channel.name != "private check in":
                 await before.channel.delete()
     except AttributeError:
-        None
+        return None
 
 async def Reaction(payload, user, msg, tf):
     if msg.content.startswith("__SNS 팔로우__"):
