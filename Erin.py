@@ -850,6 +850,9 @@ async def GuGuDan(message):
     def check(m):
         answer = list(map(int, m.content.split(" ")))
         return m.author.mention in Players and m.author.mention == currentPlayer and 1 <= answer[0] and answer[1] <= 9
+    def check2(m):
+        answer = list(map(int, m.content.split(" ")))
+        return m.author.mention in Players and m.author.mention == currentPlayer
     embed = discord.Embed(title="구구단을 외자", colour=discord.Colour.red())
     embed.add_field(name="게임 시작", value="선공은 " + currentPlayer + "!!")
     embedMessage = await message.channel.send(embed=embed)
@@ -866,7 +869,7 @@ async def GuGuDan(message):
             embed.add_field(name="{} * {} = ?".format(answer[0], answer[1]), value=currentPlayer)
             embed.set_footer(text="시간제한 : {}초".format(timeOut))
             await embedMessage.edit(embed=embed)
-            msg = await client.wait_for('message', timeout=timeOut, check=check)
+            msg = await client.wait_for('message', timeout=timeOut, check=check2)
             if int(msg.content) == rightAnswer:
                 await msg.add_reaction("✅")
                 timeOut -= 0.5
