@@ -16,6 +16,8 @@ db = connection.get_database("Erin")
 
 prefix = "에린아 "
 
+isPlaying = False
+
 @client.event
 async def on_ready():
     print(client.user.id)
@@ -460,6 +462,13 @@ async def on_message(message):
             embed.add_field(name="에린", value=rsp, inline=False)
             embed.set_footer(text=result)
             await message.channel.send(embed=embed)
+    
+    if talk.startswith("구구단"):
+        if isPlaying:
+            await message.channel.send("이미 진행중인 게임이 있습니다.")
+            return None
+        await GuGuDan(message)
+        return None
 
 
 async def Lotto(message, talk):
@@ -816,6 +825,80 @@ async def Reaction(payload, user, msg, tf):
                     except TypeError:
                         pass
                     
+async def GuGuDan(message):
+    isPlaying = True
+    embed = discord.Embed(title="구구단을 외자", colour=discord.Colour.red())
+    embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 구구단을 외자에 참가해\n공격은 숫자 두개를 말하면 되고, ex)3 7\n방어는 두 수를 곱한 수를 말하면 돼 ex)21")
+    await message.channel.send(embed=embed)
+    Players = []
+    def checkPlayer(m):
+        return not m.author.mention in Players and m.content == "에린아 참가"
+    try:
+        while True:
+            msg = await client.wait_for('message', timeout=10.0,check=checkPlayer)
+            Players.append(msg.author.mention)
+            await msg.add_reaction("✅")
+            if len(Players) == 2:
+                break
+    except asyncio.TimeoutError:
+        await message.channel.send("시간 초과")
+        isPlaying = False
+        return None
+    playerIndex = random.randint(0, 1)
+    currentPlayer = Players[playerIndex]
+    def check(m):
+        answer = list(map(int, m.content.split(" ")))
+        return m.author.mention in Players and m.author.mention == currentPlayer and 1 <= answer[0] and answer[1] <= 9
+    embed = discord.Embed(title="구구단을 외자", colour=discord.Colour.red())
+    embed.add_field(name="게임 시작", value="선공은 " + currentPlayer + "!!")
+    embedMessage = await message.channel.send(embed=embed)
+    timeOut = 5.0
+    while True:
+        try:
+            msg = await client.wait_for('message', timeout=timeOut, check=check)
+            answer = list(map(int, msg.content.split(" ")))
+            await msg.delete()
+            rightAnswer = answer[0] * answer[1]
+            playerIndex = int(not playerIndex)
+            currentPlayer = Players[playerIndex]
+            embed.clear_fields()
+            embed.add_field(name="{} * {} = ?".format(answer[0], answer[1]), value=currentPlayer)
+            embed.set_footer(text="시간제한 : {}초".format(timeOut))
+            await embedMessage.edit(embed=embed)
+            msg = await client.wait_for('message', timeout=timeOut, check=check)
+            if int(msg.content) == rightAnswer:
+                await msg.add_reaction("✅")
+                timeOut -= 0.5
+                if timeOut < 1:
+                    timeOut = 1
+                await asyncio.sleep(1)
+                await msg.delete()
+                embed.clear_fields()
+                embed.add_field(name="공격", value=currentPlayer)
+                embed.set_footer(text="시간제한 : {}초".format(timeOut))
+                await embedMessage.edit(embed=embed)
+                continue
+            else:
+                embed.clear_fields()
+                embed.add_field(name="승리", value=Players[int(not playerIndex)])
+                embed.add_field(name="패배", value=currentPlayer)
+                embed.set_footer(text="정답 : {}".format(rightAnswer))
+                await embedMessage.edit(embed=embed)
+        except asyncio.TimeoutError:
+            embed.clear_fields()
+            embed.add_field(name="승리", value=Players[int(not playerIndex)])
+            embed.add_field(name="패배", value=currentPlayer)
+            embed.set_footer(text="시간 초과")
+            await embedMessage.edit(embed=embed)
+        except ValueError:
+            embed.clear_fields()
+            embed.add_field(name="승리", value=Players[int(not playerIndex)])
+            embed.add_field(name="패배", value=currentPlayer)
+            embed.set_footer(text="다른 값 입력")
+            await embedMessage.edit(embed=embed)
+    isPlaying = False
+    return None
+
 @client.event
 async def on_reaction_add(reaction, user):
     if user.bot:
