@@ -464,6 +464,7 @@ async def on_message(message):
             await message.channel.send(embed=embed)
     
     if talk.startswith("구구단"):
+        global isPlaying
         if isPlaying:
             await message.channel.send("이미 진행중인 게임이 있습니다.")
             return None
@@ -827,7 +828,8 @@ async def Reaction(payload, user, msg, tf):
         return None
                     
 async def GuGuDan(message):
-    global isPlaying = True
+    global isPlaying
+    isPlaying = True
     embed = discord.Embed(title="구구단을 외자", colour=discord.Colour.red())
     embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 구구단을 외자에 참가해\n공격은 숫자 두개를 말하면 되고, ex)3 7\n방어는 두 수를 곱한 수를 말하면 돼 ex)21")
     await message.channel.send(embed=embed)
@@ -843,7 +845,7 @@ async def GuGuDan(message):
                 break
     except asyncio.TimeoutError:
         await message.channel.send("시간 초과")
-        global isPlaying = False
+        isPlaying = False
         return None
     playerIndex = random.randint(0, 1)
     currentPlayer = Players[playerIndex]
@@ -900,7 +902,7 @@ async def GuGuDan(message):
             embed.add_field(name="패배", value=currentPlayer)
             embed.set_footer(text="다른 값 입력")
             await embedMessage.edit(embed=embed)
-    global isPlaying = False
+    isPlaying = False
     return None
 
 @client.event
