@@ -16,7 +16,7 @@ db = connection.get_database("Erin")
 
 prefix = "에린아 "
 
-global isPlaying = False
+isPlaying = False
 
 @client.event
 async def on_ready():
