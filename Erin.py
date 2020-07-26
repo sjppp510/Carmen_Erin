@@ -824,6 +824,7 @@ async def Reaction(payload, user, msg, tf):
                         await snsChannel.edit(topic=_topic)
                     except TypeError:
                         pass
+        return None
                     
 async def GuGuDan(message):
     isPlaying = True
