@@ -464,7 +464,7 @@ async def on_message(message):
             await message.channel.send(embed=embed)
     
     if talk.startswith("구구단"):
-        if global isPlaying:
+        if isPlaying:
             await message.channel.send("이미 진행중인 게임이 있습니다.")
             return None
         await GuGuDan(message)
