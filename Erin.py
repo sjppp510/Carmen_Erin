@@ -1018,7 +1018,95 @@ async def ThreeSixNine(message):
             await embedMessage.edit(embed=embed)
             break
     isPlaying = False
-    return None  
+    return None
+
+async def TheGameOfDeth(message):
+    global isPlaying
+    isPlaying = True
+    embed = discord.Embed(title="더 게임 오브 데쓰", colour=discord.Colour.red())
+    embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 더 게임 오브 데스에 참가해\n술레는 숫자를 입력해 ex)3"
+                    "\n술레가 입력을 마치면 모든 사람들은 다른 사람을 멘션해 ex)@에린\n술래부터 시작해서 멘션당한 사람에게 넘어가면서 카운트하고 술레가 입력한 숫자에서 멈춘 사람이 패배야")
+    embed.add_field(name="주의사항", value=("술레는 5초안에 숫자를 입력해야해")
+    await message.channel.send(embed=embed)
+    Players = message.author.voice.channel.members
+    tagger = Players[random.randrange(0, len(Players))]
+    def checkPlayer(m):
+        return not m.author in Players and m.content == "에린아 참가"
+    try:
+        while True:
+            msg = await client.wait_for('message', timeout=10.0,check=checkPlayer)
+            Players.append(msg.author.mention)
+            await msg.add_reaction("✅")
+    except asyncio.TimeoutError:
+        if len(Players) < 2:
+            await message.channel.send("인원이 부족해.")
+            isPlaying = False
+            return None
+        pass
+    def check(m):
+        return m.author.mention in Players
+    def check2(m):
+        return m.author.mention in Players and len(m.mentions) != 0
+    embed = discord.Embed(title="더 게임 오브 데쓰", colour=discord.Colour.red())
+    embed.add_field(name="게임 시작", value="신이난다~")
+    embedMessage = await message.channel.send(embed=embed)
+    await asyncio.sleep(1)
+    embed.clear_fields()
+    embed.add_field(name="게임 시작", value="재미난다~")
+    await embedMessage.edit(embed=embed)
+    await asyncio.sleep(1)
+    embed.clear_fields()
+    embed.add_field(name="게임 시작", value="더 게임 오브 데쓰~")
+    await embedMessage.edit(embed=embed)
+    await asyncio.sleep(1)
+    while True:
+        try:
+            msg = await client.wait_for('message', timeout=timeOut, check=check)
+            answer = list(map(int, msg.content.split(" ")))
+            await msg.delete()
+            rightAnswer = answer[0] * answer[1]
+            playerIndex = int(not playerIndex)
+            currentPlayer = Players[playerIndex]
+            embed.clear_fields()
+            embed.add_field(name="{} * {} = ?".format(answer[0], answer[1]), value=currentPlayer)
+            embed.set_footer(text="시간제한 : {}초".format(timeOut))
+            await embedMessage.edit(embed=embed)
+            msg = await client.wait_for('message', timeout=timeOut, check=check2)
+            if int(msg.content) == rightAnswer:
+                await msg.add_reaction("✅")
+                timeOut -= 0.5
+                if timeOut < 1:
+                    timeOut = 1
+                await asyncio.sleep(1)
+                await msg.delete()
+                embed.clear_fields()
+                embed.add_field(name="공격", value=currentPlayer)
+                embed.set_footer(text="시간제한 : {}초".format(timeOut))
+                await embedMessage.edit(embed=embed)
+                continue
+            else:
+                embed.clear_fields()
+                embed.add_field(name="승리", value=Players[int(not playerIndex)])
+                embed.add_field(name="패배", value=currentPlayer)
+                embed.set_footer(text="정답 : {}".format(rightAnswer))
+                await embedMessage.edit(embed=embed)
+                break
+        except asyncio.TimeoutError:
+            embed.clear_fields()
+            embed.add_field(name="승리", value=Players[int(not playerIndex)])
+            embed.add_field(name="패배", value=currentPlayer)
+            embed.set_footer(text="시간 초과")
+            await embedMessage.edit(embed=embed)
+            break
+        except ValueError:
+            embed.clear_fields()
+            embed.add_field(name="승리", value=Players[int(not playerIndex)])
+            embed.add_field(name="패배", value=currentPlayer)
+            embed.set_footer(text="다른 값 입력")
+            await embedMessage.edit(embed=embed)
+            break
+    isPlaying = False
+    return None
 
 @client.event
 async def on_reaction_add(reaction, user):
