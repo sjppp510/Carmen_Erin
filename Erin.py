@@ -484,7 +484,10 @@ async def on_message(message):
         except TypeError:
             pass
         return None
-
+    
+    if talk.startswith("서버링크") or talk.startswith("링크") or talk.startswith("초대") or:
+        await message.channel.send(message.guild.create_invite(max_age=0, max_uses=0, reason="하바유보"))
+        return None
 
 async def Lotto(message, talk):
     lotto_Talk = talk.split(" ")
