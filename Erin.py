@@ -318,7 +318,7 @@ async def on_message(message):
         return None
 
     if talk.startswith("사진"):
-        await message.channel.send(file = discord.File("에린님.png"))
+        await message.channel.send(file=discord.File("에린님.png"))
         return None
 
     if talk.startswith("로또"):
@@ -391,7 +391,7 @@ async def on_message(message):
         return None
     
     if talk.startswith("프로필"):
-        await message.channel.send(file=message.author.avatar_url_as(format="png"))
+        await message.channel.send(file=discord.File(message.author.avatar_url_as(format="png")))
         return None
 
     if talk.startswith("sns"):
