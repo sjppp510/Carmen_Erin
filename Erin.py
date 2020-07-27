@@ -419,7 +419,7 @@ async def on_message(message):
         return None
     
     if talk.startswith("팔로우생성"):
-        await discord.utils.get(client.get_all_channels(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", name="봇-test").send(talk[6:])
+        await message.channel.send(talk[6:])
         return None
     if talk.startswith("수정"):
         if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
