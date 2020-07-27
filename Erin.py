@@ -940,7 +940,7 @@ async def ThreeSixNine(message):
     global isPlaying
     isPlaying = True
     embed = discord.Embed(title="369", colour=discord.Colour.red())
-    embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 369에 참가해\n1부터 순서대로 숫자를 입력하면 돼 ex)1\n숫자에 3이 들어가면 짝을 입력해 ex)짝")
+    embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 369에 참가해\n1부터 순서대로 숫자를 입력하면 돼 ex)1\n숫자에 3, 6, 9가 들어가면 들어간 횟수만큼 짝을 입력해 ex)3 -> 짝, 36 -> 짝짝")
     await message.channel.send(embed=embed)
     Players = []
     def checkPlayer(m):
@@ -1008,12 +1008,6 @@ async def ThreeSixNine(message):
             embed.clear_fields()
             embed.add_field(name="패배", value=currentPlayer)
             embed.set_footer(text="시간 초과")
-            await embedMessage.edit(embed=embed)
-            break
-        except ValueError:
-            embed.clear_fields()
-            embed.add_field(name="패배", value=currentPlayer)
-            embed.set_footer(text="다른 값 입력")
             await embedMessage.edit(embed=embed)
             break
     isPlaying = False
