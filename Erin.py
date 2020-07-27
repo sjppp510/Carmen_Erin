@@ -419,6 +419,9 @@ async def on_message(message):
         return None
     
     if talk.startswith("팔로우생성"):
+        if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
+            await message.channel.send("권한이 없어")
+            return None
         await message.channel.send(talk[6:])
         return None
     if talk.startswith("수정"):
@@ -472,6 +475,9 @@ async def on_message(message):
         return None
     
     if talk.startswith("역할삭제"):
+        if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
+            await message.channel.send("권한이 없어")
+            return None
         role = message.guild.get_role(int(re.findall("\d+", talk.split(" ")[1])[0]))
         snsChannel = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name=role.name.split("팔로워")[0])
         tmp_topic = re.findall("팔로워 \[\d+\]", snsChannel.topic)[0]
@@ -1012,7 +1018,7 @@ async def Help(message):
                                      "에린아 출석 : 한번 출석에 10~300의 포인트를 받습니다. 누적되면 추가로 포인트를 얻습니다.\n"
                                      "에린아 순위 : 서버 내 포인트 순위를 확인합니다.\n"
                                      "에린아 선물 <멘션> <포인트> :<멘션>에게 <포인트>만큼 포인트를 선물합니다", inline=False)
-    embed.add_field(name="기타 기능", value="에린아 삭제 <숫자>: 현재 채널에서 자신이 쓴 글을 <숫자>개 삭제합니다\n", inline=False)
+    embed.add_field(name="기타 기능", value="에린아 삭제 <갯수>, 에린아 초대, 에린아 닉네임 <변경할닉네임>, 에린아 구구단, 에린아 가위바위보, 에린아 검색 <내용>, 에린아 고양이, 에린아 시간", inline=False)
     await message.channel.send(embed=embed)
     return
 
