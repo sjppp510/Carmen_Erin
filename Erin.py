@@ -391,7 +391,7 @@ async def on_message(message):
         return None
     
     if talk.startswith("프로필"):
-        await message.channel.send(message.author.avatar_url_as(format="gif"))
+        await message.channel.send(message.author.avatar_url)
         return None
 
     if talk.startswith("sns"):
