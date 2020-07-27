@@ -923,45 +923,48 @@ async def GuGuDan(message):
 async def on_reaction_add(reaction, user):
     if user.bot:
         return None
-    count = int(reaction.message.embeds[0].author.name[0])
-    if reaction.emoji == "◀️":
-        count -= 1
-    elif reaction.emoji == "▶️":
-        count += 1
+    try:
+        count = int(reaction.message.embeds[0].author.name[0])
+        if reaction.emoji == "◀️":
+            count -= 1
+        elif reaction.emoji == "▶️":
+            count += 1
 
-    if count < 1 or count > 3:
+        if count < 1 or count > 3:
+            return None
+
+        if count == 1:
+            embed = discord.Embed()
+            embed.set_author(name="1.경고 면제권", icon_url=reaction.message.guild.icon_url)
+            embed.set_thumbnail(url=reaction.message.guild.icon_url)
+            embed.add_field(name="경고 면제권이다", value="10,000 point", inline=False)
+            await reaction.message.clear_reactions()
+            await reaction.message.edit(embed=embed)
+            await reaction.message.edit(embed=embed)
+            await reaction.message.add_reaction("◀️")
+            await reaction.message.add_reaction("▶️")
+
+        if count == 2:
+            embed = discord.Embed()
+            embed.set_author(name="2.로또 10개", icon_url=reaction.message.guild.icon_url)
+            embed.set_thumbnail(url=reaction.message.guild.icon_url)
+            embed.add_field(name="로또 10개다", value="1,000,000,000,000 point", inline=False)
+            await reaction.message.clear_reactions()
+            await reaction.message.edit(embed=embed)
+            await reaction.message.add_reaction("◀️")
+            await reaction.message.add_reaction("▶️")
+
+        if count == 3:
+            embed = discord.Embed()
+            embed.set_author(name="3.하유님 바부", icon_url=reaction.message.guild.icon_url)
+            embed.set_thumbnail(url=reaction.message.guild.icon_url)
+            embed.add_field(name="멍청이 'u'", value="메롱메롱", inline=False)
+            await reaction.message.edit(embed=embed)
+            await reaction.message.clear_reactions()
+            await reaction.message.add_reaction("◀️")
+            await reaction.message.add_reaction("▶️")
+    except (TypeError, IndexError):
         return None
-
-    if count == 1:
-        embed = discord.Embed()
-        embed.set_author(name="1.경고 면제권", icon_url=reaction.message.guild.icon_url)
-        embed.set_thumbnail(url=reaction.message.guild.icon_url)
-        embed.add_field(name="경고 면제권이다", value="10,000 point", inline=False)
-        await reaction.message.clear_reactions()
-        await reaction.message.edit(embed=embed)
-        await reaction.message.edit(embed=embed)
-        await reaction.message.add_reaction("◀️")
-        await reaction.message.add_reaction("▶️")
-
-    if count == 2:
-        embed = discord.Embed()
-        embed.set_author(name="2.로또 10개", icon_url=reaction.message.guild.icon_url)
-        embed.set_thumbnail(url=reaction.message.guild.icon_url)
-        embed.add_field(name="로또 10개다", value="1,000,000,000,000 point", inline=False)
-        await reaction.message.clear_reactions()
-        await reaction.message.edit(embed=embed)
-        await reaction.message.add_reaction("◀️")
-        await reaction.message.add_reaction("▶️")
-
-    if count == 3:
-        embed = discord.Embed()
-        embed.set_author(name="3.하유님 바부", icon_url=reaction.message.guild.icon_url)
-        embed.set_thumbnail(url=reaction.message.guild.icon_url)
-        embed.add_field(name="멍청이 'u'", value="메롱메롱", inline=False)
-        await reaction.message.edit(embed=embed)
-        await reaction.message.clear_reactions()
-        await reaction.message.add_reaction("◀️")
-        await reaction.message.add_reaction("▶️")
     return None
 
 @client.event
