@@ -914,18 +914,97 @@ async def GuGuDan(message):
                 embed.add_field(name="패배", value=currentPlayer)
                 embed.set_footer(text="정답 : {}".format(rightAnswer))
                 await embedMessage.edit(embed=embed)
+                break
         except asyncio.TimeoutError:
             embed.clear_fields()
             embed.add_field(name="승리", value=Players[int(not playerIndex)])
             embed.add_field(name="패배", value=currentPlayer)
             embed.set_footer(text="시간 초과")
             await embedMessage.edit(embed=embed)
+            break
         except ValueError:
             embed.clear_fields()
             embed.add_field(name="승리", value=Players[int(not playerIndex)])
             embed.add_field(name="패배", value=currentPlayer)
             embed.set_footer(text="다른 값 입력")
             await embedMessage.edit(embed=embed)
+            break
+    isPlaying = False
+    return None
+
+async def ThreeSixNine(message):
+    global isPlaying
+    isPlaying = True
+    embed = discord.Embed(title="369", colour=discord.Colour.red())
+    embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 369에 참가해\n1부터 순서대로 숫자를 입력하면 돼 ex)1\n3의 배수일 때는 짝을 입력해 ex)짝")
+    await message.channel.send(embed=embed)
+    Players = []
+    def checkPlayer(m):
+        return not m.author.mention in Players and m.content == "에린아 참가"
+    try:
+        while True:
+            msg = await client.wait_for('message', timeout=10.0,check=checkPlayer)
+            Players.append(msg.author.mention)
+            await msg.add_reaction("✅")
+    except asyncio.TimeoutError:
+        if len(Players) < 2:
+            await message.channel.send("인원이 부족해.")
+            isPlaying = False
+            return None
+        pass
+    currentPlayer = Players[0]
+    def check(m):
+        return m.author.mention in Players and m.author.mention == currentPlayer
+    embed = discord.Embed(title="369", colour=discord.Colour.red())
+    order = ""
+    num = 1
+    for p in Players:
+        order += "{0}. {1}".format(num, p)
+        num += 1
+    embed.add_field(name="게임 시작", value="순서는\n " + order)
+    embedMessage = await message.channel.send(embed=embed)
+    timeOut = 5.0
+    num = 0
+    rightAnswer = 1
+    while True:
+        try:
+            msg = await client.wait_for('message', timeout=timeOut, check=check)
+            answer = msg.content
+            await msg.delete()
+            currentPlayer = Players[num]
+            await embedMessage.edit(embed=embed)
+            msg = await client.wait_for('message', timeout=timeOut, check=check2)
+            if (rightAnswer % 3 == 0 and msg.content == "짝") or (int(msg.content) == rightAnswer):
+                await msg.add_reaction("✅")
+                timeOut -= 0.5
+                if timeOut < 1:
+                    timeOut = 1
+                await asyncio.sleep(1)
+                await msg.delete()
+                embed.clear_fields()
+                embed.add_field(name="이번 순서", value=currentPlayer)
+                embed.set_footer(text="시간제한 : {}초".format(timeOut))
+                await embedMessage.edit(embed=embed)
+                rightAnswer += 1
+                continue
+            else:
+                embed.clear_fields()
+                embed.add_field(name="패배", value=currentPlayer)
+                embed.set_footer(text="")
+                await embedMessage.edit(embed=embed)
+                break
+        except asyncio.TimeoutError:
+            embed.clear_fields()
+            embed.add_field(name="패배", value=currentPlayer)
+            embed.set_footer(text="시간 초과")
+            await embedMessage.edit(embed=embed)
+            break
+        except ValueError:
+            embed.clear_fields()
+            embed.add_field(name="패배", value=currentPlayer)
+            embed.set_footer(text="다른 값 입력")
+            await embedMessage.edit(embed=embed)
+            break
     isPlaying = False
     return None
 
