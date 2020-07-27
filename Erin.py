@@ -940,7 +940,7 @@ async def ThreeSixNine(message):
     global isPlaying
     isPlaying = True
     embed = discord.Embed(title="369", colour=discord.Colour.red())
-    embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 369에 참가해\n1부터 순서대로 숫자를 입력하면 돼 ex)1\n숫자에 3이  짝을 입력해 ex)짝")
+    embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 369에 참가해\n1부터 순서대로 숫자를 입력하면 돼 ex)1\n숫자에 3이 들어가면 짝을 입력해 ex)짝")
     await message.channel.send(embed=embed)
     Players = []
     def checkPlayer(m):
@@ -981,7 +981,7 @@ async def ThreeSixNine(message):
             await embedMessage.edit(embed=embed)
             msg = await client.wait_for('message', timeout=timeOut, check=check)
             for i in [3, 6, 9]:
-                if i in Answer:
+                if str(i) in Answer:
                     JJack += 1
             if (JJackTF and msg.content == ("짝" * JJack)) or (int(msg.content) == Answer):
                 await msg.add_reaction("✅")
