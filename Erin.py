@@ -393,6 +393,7 @@ async def on_message(message):
     if talk.startswith("프로필"):
         embed = discord.Embed()
         embed.set_image(url=message.author.avatar_url)
+        embed.set_thumbnail(url=message.author.avatar_url)
         await message.channel.send(embed=embed)
         return None
 
