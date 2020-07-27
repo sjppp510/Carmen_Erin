@@ -389,6 +389,10 @@ async def on_message(message):
         embed.set_image(url="https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png")
         await message.channel.send(embed=embed)
         return None
+    
+    if talk.startswith("프로필"):
+        await message.channel.send(message.author.avatar_url_as(format="gif"))
+        return None
 
     if talk.startswith("sns"):
         await Sns(message, talk)
