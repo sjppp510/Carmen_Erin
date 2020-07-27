@@ -1024,7 +1024,7 @@ async def TheGameOfDeth(message):
     global isPlaying
     isPlaying = True
     embed = discord.Embed(title="더 게임 오브 데쓰", colour=discord.Colour.red())
-    embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 더 게임 오브 데스에 참가해\n술레는 숫자를 입력해 ex)3"
+    embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 더 게임 오브 데스에 참가해\n술레는 숫자를 입력해 ex)3" +
                     "\n술레가 입력을 마치면 모든 사람들은 다른 사람을 멘션해 ex)@에린\n술래부터 시작해서 멘션당한 사람에게 넘어가면서 카운트하고 술레가 입력한 숫자에서 멈춘 사람이 패배야")
     embed.add_field(name="주의사항", value=("술레는 5초안에 숫자를 입력해야해\n멘션후 메세지에 ✅이모지가 있어야해")
     await message.channel.send(embed=embed)
