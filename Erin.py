@@ -486,8 +486,8 @@ async def on_message(message):
         return None
     
     if talk.startswith("서버링크") or talk.startswith("서버 링크") or talk.startswith("링크") or talk.startswith("초대"):
-        await message.channel.send(str(message.channel.create_invite(max_age=0, max_uses=0, reason="하바유보")))
-        await message.channel.send(message.channel.create_invite(max_age=0, max_uses=0, reason="하바유보").url)
+        link = await message.channel.create_invite(max_age=0, max_uses=0, reason="하바유보")
+        await message.channel.send(link)
         return None
 
 async def Lotto(message, talk):
