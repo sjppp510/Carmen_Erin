@@ -940,7 +940,7 @@ async def ThreeSixNine(message):
     global isPlaying
     isPlaying = True
     embed = discord.Embed(title="369", colour=discord.Colour.red())
-    embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 369에 참가해\n1부터 순서대로 숫자를 입력하면 돼 ex)1\n3의 배수일 때는 짝을 입력해 ex)짝")
+    embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 369에 참가해\n1부터 순서대로 숫자를 입력하면 돼 ex)1\n숫자에 3이  짝을 입력해 ex)짝")
     await message.channel.send(embed=embed)
     Players = []
     def checkPlayer(m):
