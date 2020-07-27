@@ -274,8 +274,8 @@ async def on_message(message):
         return None
 
     if talk.startswith("노라조"):
-        Chat = ["https://www.youtube.com/watch?v=2CGc9Ly11yo", "https://www.youtube.com/watch?v=ezwgRTy8R8U",
-                "https://www.youtube.com/watch?v=ao58vQDMVlQ", "https://www.youtube.com/watch?v=JBoqPoqA8mM",
+        Chat = ["https://www.youtube.com/watch?v=2CGc9Ly11yo","https://www.youtube.com/watch?v=ao58vQDMVlQ", 
+                "https://www.youtube.com/watch?v=JBoqPoqA8mM",
                 "https://www.youtube.com/watch?v=AX3nSbKHDQU", "https://www.youtube.com/watch?v=YEYDPgfY-bE"]
         await message.channel.send("이분이랑 노는건 어때?")
         await message.channel.send(Chat[random.randrange(0, len(Chat))])
