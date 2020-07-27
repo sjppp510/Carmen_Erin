@@ -1018,7 +1018,7 @@ async def ThreeSixNine(message):
             await embedMessage.edit(embed=embed)
             break
     isPlaying = False
-    return None
+    return None  
 
 @client.event
 async def on_reaction_add(reaction, user):
