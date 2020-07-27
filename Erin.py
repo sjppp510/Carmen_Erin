@@ -470,6 +470,19 @@ async def on_message(message):
             return None
         await GuGuDan(message)
         return None
+    
+    if talk.startswith("역할삭제"):
+        role = message.guild.get_role(int(re.findall("\d+", talk.split(" ")[1])[0]))
+        snsChannel = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name=role.name.split("팔로워")[0])
+        tmp_topic = re.findall("팔로워 \[\d+\]", snsChannel.topic)[0]
+        for user in role.members:
+            await user.remove_roles(role)
+        _topic = snsChannel.topic.replace(tmp_topic, "팔로워 [0]")
+        try:
+            await snsChannel.edit(topic=_topic)
+        except TypeError:
+            pass
+        return None
 
 
 async def Lotto(message, talk):
