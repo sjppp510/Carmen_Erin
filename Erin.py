@@ -186,7 +186,7 @@ async def on_message(message):
         Chat = ["1년 잠수타시는 대신관이자 개발팀!", "곧 오실 거야.."]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
-    if talk.startswith("상런쳐") or talk.startswith("상런처") or talk.startswith("발사통"):
+    if talk.startswith("상런쳐") or talk.startswith("상런처") or talk.startswith("발사통") or talk.startswith("런처") or talk.startswith("런쳐"):
         await message.channel.send("에린이 아빠에요")
         await asyncio.sleep(1)
         await message.channel.send("안녕해요")
