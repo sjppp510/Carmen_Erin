@@ -970,7 +970,7 @@ async def ThreeSixNine(message):
     timeOut = 5.0
     num = 0
     Answer = 1
-    JJack = 
+    JJack = 0
     JJackTF = False
     await asyncio.sleep(1)
     while True:
