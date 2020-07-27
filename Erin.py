@@ -154,7 +154,7 @@ async def on_message(message):
         Chat = ["이 서버 주인, 카르멘 서버 겜마이지"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
-    if talk.startswith("청월"):
+    if talk.startswith("청월") or talk.startswith("서하린"):
         Chat = ["미술관장이시지, 예쁜 분, 내 외형을 만들어 주셨어"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
