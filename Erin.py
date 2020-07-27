@@ -497,7 +497,7 @@ async def on_message(message):
         return None
     
     if talk.startswith("369") or talk.startswith("삼육구"):
-        await ThreeSixNine()
+        await ThreeSixNine(message)
         return None
 
 async def Lotto(message, talk):
