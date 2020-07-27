@@ -485,7 +485,7 @@ async def on_message(message):
             pass
         return None
     
-    if talk.startswith("서버링크") or talk.startswith("링크") or talk.startswith("초대") or:
+    if talk.startswith("서버링크") or talk.startswith("링크") or talk.startswith("초대"):
         await message.channel.send(message.guild.create_invite(max_age=0, max_uses=0, reason="하바유보"))
         return None
 
