@@ -983,6 +983,7 @@ async def ThreeSixNine(message):
             for i in [3, 6, 9]:
                 if str(i) in str(Answer):
                     JJack += 1
+                    JJackTF = True
             if (JJackTF and msg.content == ("짝" * JJack)) or (msg.content == str(Answer)):
                 await msg.add_reaction("✅")
                 timeOut -= 0.5
