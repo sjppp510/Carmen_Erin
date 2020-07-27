@@ -232,7 +232,7 @@ async def on_message(message):
             await message.channel.send("기획팀이셔")
         return None
     if talk.startswith("세라"):
-        Chat = ["귀여운 기획팀 분이야!", "세라님 귀엽지", "세라님 섹시하지"]
+        Chat = ["귀여운 기획팀 분이야!", "세라님 귀엽지", "세라님 섹시하지", "세라님 섹시하고 깜찍하고 발랄하고 예쁘고 기엽고 매력적이고 이쁘고 에린이꺼❤️"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("디자인팀"):
@@ -1101,8 +1101,8 @@ async def Help(message):
                                      "에린아 로또 확인 : 본인의 로또 번호를 확인합니다", inline=False)
     embed.add_field(name="포인트", value="에린아 포인트 : 자신의 포인트를 확인합니다.\n"
                                      "에린아 출석 : 한번 출석에 10~300의 포인트를 받습니다. 누적되면 추가로 포인트를 얻습니다.\n"
-                                     "에린아 순위 : 서버 내 포인트 순위를 확인합니다.\n"
-                                     "에린아 선물 <멘션> <포인트> :<멘션>에게 <포인트>만큼 포인트를 선물합니다", inline=False)
+                                     "에린아 포인트 순위 : 서버 내 포인트 순위를 확인합니다.\n"
+                                     "에린아 포인트 선물 <멘션> <포인트> :<멘션>에게 <포인트>만큼 포인트를 선물합니다", inline=False)
     embed.add_field(name="기타 기능", value="에린아 삭제 <갯수>, 에린아 초대, 에린아 닉네임 <변경할닉네임>, 에린아 구구단, 에린아 가위바위보, 에린아 검색 <내용>, 에린아 고양이, 에린아 시간, 에린아 369", inline=False)
     await message.channel.send(embed=embed)
     return
