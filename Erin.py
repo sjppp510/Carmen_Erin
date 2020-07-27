@@ -969,27 +969,27 @@ async def ThreeSixNine(message):
     embedMessage = await message.channel.send(embed=embed)
     timeOut = 5.0
     num = 0
-    rightAnswer = 1
+    Answer = 1
+    await asyncio.sleep(1)
     while True:
         try:
-            msg = await client.wait_for('message', timeout=timeOut, check=check)
-            answer = msg.content
-            await msg.delete()
-            currentPlayer = Players[num]
+            embed.clear_fields()
+            embed.add_field(name="이번 순서", value=currentPlayer)
+            embed.set_footer(text="시간제한 : {}초".format(timeOut))
             await embedMessage.edit(embed=embed)
             msg = await client.wait_for('message', timeout=timeOut, check=check)
-            if (rightAnswer % 3 == 0 and msg.content == "짝") or (int(msg.content) == rightAnswer):
+            if (Answer % 3 == 0 and msg.content == "짝") or (int(msg.content) == Answer):
                 await msg.add_reaction("✅")
                 timeOut -= 0.5
                 if timeOut < 1:
                     timeOut = 1
                 await asyncio.sleep(1)
                 await msg.delete()
-                embed.clear_fields()
-                embed.add_field(name="이번 순서", value=currentPlayer)
-                embed.set_footer(text="시간제한 : {}초".format(timeOut))
-                await embedMessage.edit(embed=embed)
-                rightAnswer += 1
+                num += 1
+                if num >= len(Players):
+                    num = 0
+                currentPlayer = Players[num]
+                Answer += 1
                 continue
             else:
                 embed.clear_fields()
