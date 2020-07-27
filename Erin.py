@@ -495,6 +495,10 @@ async def on_message(message):
         link = await message.channel.create_invite(max_age=0, max_uses=0, reason="하바유보")
         await message.channel.send(link)
         return None
+    
+    if talk.startswith("369") or talk.startswith("삼육구"):
+        await ThreeSixNine()
+        return None
 
 async def Lotto(message, talk):
     lotto_Talk = talk.split(" ")
