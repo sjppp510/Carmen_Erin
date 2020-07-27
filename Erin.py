@@ -505,6 +505,10 @@ async def on_message(message):
     if talk.startswith("369") or talk.startswith("삼육구"):
         await ThreeSixNine(message)
         return None
+    
+    if talk.startswith("더게임오브데스") or talk.startswith("더 게임 오브 데스"):
+        TheGameOfDeth(message)
+        return None
 
 async def Lotto(message, talk):
     lotto_Talk = talk.split(" ")
