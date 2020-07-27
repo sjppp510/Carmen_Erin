@@ -970,6 +970,8 @@ async def ThreeSixNine(message):
     timeOut = 5.0
     num = 0
     Answer = 1
+    JJack = 
+    JJackTF = False
     await asyncio.sleep(1)
     while True:
         try:
@@ -978,7 +980,10 @@ async def ThreeSixNine(message):
             embed.set_footer(text="시간제한 : {}초".format(timeOut))
             await embedMessage.edit(embed=embed)
             msg = await client.wait_for('message', timeout=timeOut, check=check)
-            if (Answer % 3 == 0 and msg.content == "짝") or (int(msg.content) == Answer):
+            for i in [3, 6, 9]:
+                if i in Answer:
+                    JJack += 1
+            if (JJackTF and msg.content == ("짝" * JJack)) or (int(msg.content) == Answer):
                 await msg.add_reaction("✅")
                 timeOut -= 0.5
                 if timeOut < 1:
@@ -990,6 +995,8 @@ async def ThreeSixNine(message):
                     num = 0
                 currentPlayer = Players[num]
                 Answer += 1
+                JJack = 0
+                JJackTF = False
                 continue
             else:
                 embed.clear_fields()
