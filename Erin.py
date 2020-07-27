@@ -391,7 +391,9 @@ async def on_message(message):
         return None
     
     if talk.startswith("프로필"):
-        await message.channel.send(file=discord.File(message.author.avatar_url_as(format="png")))
+        embed = discord.Embed()
+        embed.set_image(url=message.author.avatar_url_as(format="png"))
+        await message.channel.send(embed=embed)
         return None
 
     if talk.startswith("sns"):
