@@ -480,6 +480,7 @@ async def on_message(message):
         _topic = snsChannel.topic.replace(tmp_topic, "팔로워 [0]")
         try:
             await snsChannel.edit(topic=_topic)
+            await message.add_reaction("✅")
         except TypeError:
             pass
         return None
