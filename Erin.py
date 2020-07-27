@@ -1026,9 +1026,11 @@ async def TheGameOfDeth(message):
     embed = discord.Embed(title="더 게임 오브 데쓰", colour=discord.Colour.red())
     embed.add_field(name="게임 방법", value="\"에린아 참가\"를 입력해서 더 게임 오브 데스에 참가해\n술레는 숫자를 입력해 ex)3"
                     "\n술레가 입력을 마치면 모든 사람들은 다른 사람을 멘션해 ex)@에린\n술래부터 시작해서 멘션당한 사람에게 넘어가면서 카운트하고 술레가 입력한 숫자에서 멈춘 사람이 패배야")
-    embed.add_field(name="주의사항", value=("술레는 5초안에 숫자를 입력해야해")
+    embed.add_field(name="주의사항", value=("술레는 5초안에 숫자를 입력해야해\n멘션후 메세지에 ✅이모지가 있어야해")
     await message.channel.send(embed=embed)
-    Players = message.author.voice.channel.members
+    Players = []
+    for p in message.author.voice.channel.members:
+        Players.append(i.mention)
     tagger = Players[random.randrange(0, len(Players))]
     def checkPlayer(m):
         return not m.author in Players and m.content == "에린아 참가"
@@ -1046,7 +1048,7 @@ async def TheGameOfDeth(message):
     def check(m):
         return m.author.mention in Players
     def check2(m):
-        return m.author.mention in Players and len(m.mentions) != 0
+        return m.author.mention in Players and m.mentions[0] in Players
     embed = discord.Embed(title="더 게임 오브 데쓰", colour=discord.Colour.red())
     embed.add_field(name="게임 시작", value="신이난다~")
     embedMessage = await message.channel.send(embed=embed)
@@ -1061,47 +1063,38 @@ async def TheGameOfDeth(message):
     await asyncio.sleep(1)
     while True:
         try:
-            msg = await client.wait_for('message', timeout=timeOut, check=check)
-            answer = list(map(int, msg.content.split(" ")))
-            await msg.delete()
-            rightAnswer = answer[0] * answer[1]
-            playerIndex = int(not playerIndex)
-            currentPlayer = Players[playerIndex]
             embed.clear_fields()
-            embed.add_field(name="{} * {} = ?".format(answer[0], answer[1]), value=currentPlayer)
-            embed.set_footer(text="시간제한 : {}초".format(timeOut))
+            embed.add_field(name="술래", value=tagger.mention)
             await embedMessage.edit(embed=embed)
-            msg = await client.wait_for('message', timeout=timeOut, check=check2)
-            if int(msg.content) == rightAnswer:
+            msg = await client.wait_for('message', timeout=10, check=check)
+            count = int(msg)
+            await msg.delete()
+            embed.clear_fields()
+            embed.add_field(name="횟수 : {}".format(count), value="다른 사람을 멘션해줘")
+            await embedMessage.edit(embed=embed)
+            for i in range(0, len(Players)):
+                msg = await client.wait_for('message', timeout=timeOut, check=check2)
+                Players.remove(msg.author.mention)
+                Players.append([msg.author.mention, msg.mentions[0]])
                 await msg.add_reaction("✅")
-                timeOut -= 0.5
-                if timeOut < 1:
-                    timeOut = 1
-                await asyncio.sleep(1)
-                await msg.delete()
-                embed.clear_fields()
-                embed.add_field(name="공격", value=currentPlayer)
-                embed.set_footer(text="시간제한 : {}초".format(timeOut))
+                    
+            for j in range(0, count):
+                embed.add_field(name="카운트 시작", value="{} -> {}".format(tagger, Players[Players.index(tagger)][1]))
+                embed.set_footer(text="횟수 : {}//{}".format(j+1, count))
                 await embedMessage.edit(embed=embed)
-                continue
-            else:
-                embed.clear_fields()
-                embed.add_field(name="승리", value=Players[int(not playerIndex)])
-                embed.add_field(name="패배", value=currentPlayer)
-                embed.set_footer(text="정답 : {}".format(rightAnswer))
-                await embedMessage.edit(embed=embed)
-                break
+                tagger = Players[Players.index(tagger)][0]
+                    
+            embed.add_field(name="패배", value=tagger)
+            await embedMessage.edit(embed=embed)
         except asyncio.TimeoutError:
             embed.clear_fields()
-            embed.add_field(name="승리", value=Players[int(not playerIndex)])
-            embed.add_field(name="패배", value=currentPlayer)
+            embed.add_field(name="오류", value="ㅡnㅡ")
             embed.set_footer(text="시간 초과")
             await embedMessage.edit(embed=embed)
             break
         except ValueError:
             embed.clear_fields()
-            embed.add_field(name="승리", value=Players[int(not playerIndex)])
-            embed.add_field(name="패배", value=currentPlayer)
+            embed.add_field(name="오류", value="ㅡnㅡ")
             embed.set_footer(text="다른 값 입력")
             await embedMessage.edit(embed=embed)
             break
