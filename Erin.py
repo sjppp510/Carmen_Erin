@@ -981,7 +981,7 @@ async def ThreeSixNine(message):
             await embedMessage.edit(embed=embed)
             msg = await client.wait_for('message', timeout=timeOut, check=check)
             for i in [3, 6, 9]:
-                if str(i) in Answer:
+                if str(i) in str(Answer):
                     JJack += 1
             if (JJackTF and msg.content == ("짝" * JJack)) or (int(msg.content) == Answer):
                 await msg.add_reaction("✅")
