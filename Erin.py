@@ -977,7 +977,7 @@ async def ThreeSixNine(message):
             await msg.delete()
             currentPlayer = Players[num]
             await embedMessage.edit(embed=embed)
-            msg = await client.wait_for('message', timeout=timeOut, check=check2)
+            msg = await client.wait_for('message', timeout=timeOut, check=check)
             if (rightAnswer % 3 == 0 and msg.content == "짝") or (int(msg.content) == rightAnswer):
                 await msg.add_reaction("✅")
                 timeOut -= 0.5
