@@ -1075,7 +1075,7 @@ async def TheGameOfDeth(message):
             embed.add_field(name="술래", value=tagger)
             await embedMessage.edit(embed=embed)
             msg = await client.wait_for('message', timeout=10, check=check)
-            count = int(msg)
+            count = int(msg.content)
             await msg.delete()
             embed.clear_fields()
             embed.add_field(name="횟수 : {}".format(count), value="다른 사람을 멘션해줘")
