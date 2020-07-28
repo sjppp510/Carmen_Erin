@@ -1055,6 +1055,11 @@ async def TheGameOfDeth(message):
     def check(m):
         return m.author.mention in Players
     def check2(m):
+        print(m.mentions[0])
+        print(m.content)
+        print(m.author.mention in Players)
+        print(m.mentions[0] in Players)
+        print(m.content != m.author.mention)
         return m.author.mention in Players and m.mentions[0] in Players and m.content != m.author.mention
     embed = discord.Embed(title="더 게임 오브 데쓰", colour=discord.Colour.red())
     embed.add_field(name="게임 시작", value="신이난다~")
