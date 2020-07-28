@@ -820,7 +820,7 @@ async def on_voice_state_update(member, before, after):
 async def Reaction(payload, user, msg, tf):
     if msg.content.startswith("__SNS 팔로우__"):
         if str(payload.emoji) == "👥": #올팔로우
-            user.add_roles(msg.guild.get_role(731802943011160165))
+            await user.add_roles(msg.guild.get_role(731802943011160165))
             follow = msg.content.split("\n")
             follow = follow[1:]
             for i in follow:
