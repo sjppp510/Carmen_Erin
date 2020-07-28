@@ -1075,44 +1075,41 @@ async def TheGameOfDeth(message):
     await embedMessage.edit(embed=embed)
     tagger = Players[random.randrange(0, len(Players))]
     await asyncio.sleep(1)
-    while True:
-        try:
-            embed.clear_fields()
-            embed.add_field(name="술래", value=tagger)
-            await embedMessage.edit(embed=embed)
-            msg = await client.wait_for('message', timeout=10, check=check)
-            count = int(msg.content)
-            await msg.delete()
-            embed.clear_fields()
-            embed.add_field(name="횟수 : {}".format(count), value="다른 사람을 멘션해줘")
-            await embedMessage.edit(embed=embed)
-            playerChoice = {}
-            for i in range(0, len(Players)):
-                msg = await client.wait_for('message', timeout=10, check=check2)
-                playerChoice[msg.author.mention] = msg.mentions[0].mention
-                await msg.add_reaction("✅")
+    try:
+        embed.clear_fields()
+        embed.add_field(name="술래", value=tagger)
+        await embedMessage.edit(embed=embed)
+        msg = await client.wait_for('message', timeout=10, check=check)
+        count = int(msg.content)
+        await msg.delete()
+        embed.clear_fields()
+        embed.add_field(name="횟수 : {}".format(count), value="다른 사람을 멘션해줘")
+        await embedMessage.edit(embed=embed)
+        playerChoice = {}
+        for i in range(0, len(Players)):
+            msg = await client.wait_for('message', timeout=10, check=check2)
+            playerChoice[msg.author.mention] = msg.mentions[0].mention
+            await msg.add_reaction("✅")
                     
-            for j in range(0, count):
-                embed.clear_fields()
-                embed.add_field(name="카운트 시작", value="{} -> {}".format(tagger, playerChoice[tagger]))
-                embed.set_footer(text="횟수 : {}/{}".format(j+1, count))
-                await embedMessage.edit(embed=embed)
-                tagger = playerChoice[tagger]
-                await asyncio.sleep(1)
-            embed.add_field(name="패배", value=tagger)
-            await embedMessage.edit(embed=embed)
-        except asyncio.TimeoutError:
+        for j in range(0, count):
             embed.clear_fields()
-            embed.add_field(name="오류", value="ㅡnㅡ")
-            embed.set_footer(text="시간 초과")
+            embed.add_field(name="카운트 시작", value="{} -> {}".format(tagger, playerChoice[tagger]))
+            embed.set_footer(text="횟수 : {}/{}".format(j+1, count))
             await embedMessage.edit(embed=embed)
-            break
-        except ValueError:
-            embed.clear_fields()
-            embed.add_field(name="오류", value="ㅡnㅡ")
-            embed.set_footer(text="시간 초과")
-            await embedMessage.edit(embed=embed)
-            break
+            tagger = playerChoice[tagger]
+            await asyncio.sleep(1)
+        embed.add_field(name="패배", value=tagger)
+        await embedMessage.edit(embed=embed)
+    except asyncio.TimeoutError:
+        embed.clear_fields()
+        embed.add_field(name="오류", value="ㅡnㅡ")
+        embed.set_footer(text="시간 초과")
+        await embedMessage.edit(embed=embed)
+    except ValueError:
+        embed.clear_fields()
+        embed.add_field(name="오류", value="ㅡnㅡ")
+        embed.set_footer(text="시간 초과")
+        await embedMessage.edit(embed=embed)
     isPlaying = False
     return None
 
