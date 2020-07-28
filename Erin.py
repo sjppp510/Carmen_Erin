@@ -1180,6 +1180,8 @@ async def on_raw_reaction_add(payload):
     if payload.member.bot:
         return None
     channel = discord.utils.get(client.get_all_channels(), id=payload.channel_id)
+    if channel.category.name != "SNS":
+        return None
     msg = await channel.fetch_message(payload.message_id)
     await Reaction(payload, payload.member, msg, True)
     return None
