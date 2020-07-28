@@ -833,7 +833,7 @@ async def Reaction(payload, user, msg, tf):
                         continue
                     await user.add_roles(role)
                     for c in msg.reactions:
-                        if payload.emoji == c.:
+                        if payload.emoji == c.emoji:
                             count = c.count + len(message.guild.get_role(731802943011160165).members)
                 else:
                     count = 0
@@ -841,7 +841,7 @@ async def Reaction(payload, user, msg, tf):
                         continue
                     await user.remove_roles(role)
                     for c in msg.reactions:
-                        if payload.emoji == c:
+                        if payload.emoji == c.emoji:
                             count = c.count + len(message.guild.get_role(731802943011160165).members)
                 _topic = snsChannel.topic.replace(tmp_topic, "팔로워 [%s]" % str(count))
                 try:
@@ -860,18 +860,15 @@ async def Reaction(payload, user, msg, tf):
                     if tf:
                         count = 0
                         for c in msg.reactions:
-                            print(payload.emoji)
-                            print(c)
-                            if payload.emoji == c:
+                            if payload.emoji == c.emoji:
                                 count = c.count + len(message.guild.get_role(731802943011160165).members)
-                                print(count)
                         if role in user.roles:
                             return None
                         await user.add_roles(role)
                     else:
                         count = 0
                         for c in msg.reactions:
-                            if payload.emoji == c:
+                            if payload.emoji == c.emoji:
                                 count = c.count + len(message.guild.get_role(731802943011160165).members)
                         if not role in user.roles:
                             return None
