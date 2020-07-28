@@ -472,14 +472,6 @@ async def on_message(message):
             embed.set_footer(text=result)
             await message.channel.send(embed=embed)
     
-    if talk.startswith("구구단"):
-        global isPlaying
-        if isPlaying:
-            await message.channel.send("이미 진행중인 게임이 있습니다.")
-            return None
-        await GuGuDan(message)
-        return None
-    
     if talk.startswith("역할삭제"):
         if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
             await message.channel.send("권한이 없어")
@@ -502,12 +494,28 @@ async def on_message(message):
         await message.channel.send(link)
         return None
     
+    if talk.startswith("구구단"):
+        global isPlaying
+        if isPlaying:
+            await message.channel.send("이미 진행중인 게임이 있습니다.")
+            return None
+        await GuGuDan(message)
+        return None
+    
     if talk.startswith("369") or talk.startswith("삼육구"):
+        global isPlaying
+        if isPlaying:
+            await message.channel.send("이미 진행중인 게임이 있습니다.")
+            return None
         await ThreeSixNine(message)
         return None
     
     if talk.startswith("더게임오브데스") or talk.startswith("더 게임 오브 데스"):
-        TheGameOfDeth(message)
+        global isPlaying
+        if isPlaying:
+            await message.channel.send("이미 진행중인 게임이 있습니다.")
+            return None
+        await TheGameOfDeth(message)
         return None
 
 async def Lotto(message, talk):
