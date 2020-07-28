@@ -1100,12 +1100,6 @@ async def TheGameOfDeth(message):
             embed.set_footer(text="시간 초과")
             await embedMessage.edit(embed=embed)
             break
-        except ValueError:
-            embed.clear_fields()
-            embed.add_field(name="오류", value="ㅡnㅡ")
-            embed.set_footer(text="다른 값 입력")
-            await embedMessage.edit(embed=embed)
-            break
     isPlaying = False
     return None
 
