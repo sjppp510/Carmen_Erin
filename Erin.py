@@ -825,6 +825,7 @@ async def Reaction(payload, user, msg, tf):
             for i in follow:
                 i = i.split(":")
                 role = user.guild.get_role(int(re.findall("\d+", i[1])[0]))
+                print(role)
                 snsChannel = discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name=role.name.split("팔로워")[0])
                 tmp_topic = re.findall("팔로워 \[\d+\]", snsChannel.topic)[0]
                 if tf:
