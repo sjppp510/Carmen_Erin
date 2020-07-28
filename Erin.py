@@ -494,8 +494,8 @@ async def on_message(message):
         await message.channel.send(link)
         return None
     
+    global isPlaying
     if talk.startswith("구구단"):
-        global isPlaying
         if isPlaying:
             await message.channel.send("이미 진행중인 게임이 있습니다.")
             return None
@@ -503,7 +503,6 @@ async def on_message(message):
         return None
     
     if talk.startswith("369") or talk.startswith("삼육구"):
-        global isPlaying
         if isPlaying:
             await message.channel.send("이미 진행중인 게임이 있습니다.")
             return None
@@ -511,7 +510,6 @@ async def on_message(message):
         return None
     
     if talk.startswith("더게임오브데스") or talk.startswith("더 게임 오브 데스"):
-        global isPlaying
         if isPlaying:
             await message.channel.send("이미 진행중인 게임이 있습니다.")
             return None
