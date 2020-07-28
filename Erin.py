@@ -1055,7 +1055,7 @@ async def TheGameOfDeth(message):
     def check(m):
         return m.author.mention in Players
     def check2(m):
-        return m.author.mention in Players and m.mentions[0] in Players
+        return m.author.mention in Players and m.mentions[0] in Players and m.content != m.author.mention
     embed = discord.Embed(title="더 게임 오브 데쓰", colour=discord.Colour.red())
     embed.add_field(name="게임 시작", value="신이난다~")
     embedMessage = await message.channel.send(embed=embed)
@@ -1072,7 +1072,7 @@ async def TheGameOfDeth(message):
     while True:
         try:
             embed.clear_fields()
-            embed.add_field(name="술래", value=tagger.mention)
+            embed.add_field(name="술래", value=tagger)
             await embedMessage.edit(embed=embed)
             msg = await client.wait_for('message', timeout=10, check=check)
             count = int(msg)
