@@ -1027,6 +1027,12 @@ async def ThreeSixNine(message):
             embed.set_footer(text="시간 초과")
             await embedMessage.edit(embed=embed)
             break
+        except ValueError:
+            embed.clear_fields()
+            embed.add_field(name="패배", value=currentPlayer)
+            embed.set_footer(text="다른 값 입력")
+            await embedMessage.edit(embed=embed)
+            break
     isPlaying = False
     return None
 
@@ -1087,14 +1093,21 @@ async def TheGameOfDeth(message):
                 await msg.add_reaction("✅")
                     
             for j in range(0, count):
+                embed.clear_fields()
                 embed.add_field(name="카운트 시작", value="{} -> {}".format(tagger, playerChoice[tagger]))
                 embed.set_footer(text="횟수 : {}//{}".format(j+1, count))
                 await embedMessage.edit(embed=embed)
                 tagger = playerChoice[tagger]
-                    
+                await asyncio.sleep(1)
             embed.add_field(name="패배", value=tagger)
             await embedMessage.edit(embed=embed)
         except asyncio.TimeoutError:
+            embed.clear_fields()
+            embed.add_field(name="오류", value="ㅡnㅡ")
+            embed.set_footer(text="시간 초과")
+            await embedMessage.edit(embed=embed)
+            break
+        except ValueError:
             embed.clear_fields()
             embed.add_field(name="오류", value="ㅡnㅡ")
             embed.set_footer(text="시간 초과")
