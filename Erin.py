@@ -1081,7 +1081,7 @@ async def TheGameOfDeth(message):
             embed.add_field(name="횟수 : {}".format(count), value="다른 사람을 멘션해줘")
             await embedMessage.edit(embed=embed)
             for i in range(0, len(Players)):
-                msg = await client.wait_for('message', timeout=timeOut, check=check2)
+                msg = await client.wait_for('message', timeout=10, check=check2)
                 Players.remove(msg.author.mention)
                 Players.append([msg.author.mention, msg.mentions[0]])
                 await msg.add_reaction("✅")
