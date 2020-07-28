@@ -833,7 +833,7 @@ async def Reaction(payload, user, msg, tf):
                         continue
                     await user.add_roles(role)
                     for c in msg.reactions:
-                        if payload.emoji == c:
+                        if payload.emoji == c.:
                             count = c.count + len(message.guild.get_role(731802943011160165).members)
                 else:
                     count = 0
