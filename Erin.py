@@ -783,7 +783,7 @@ async def Sns(message, talk):
                     i+= 1
             except IndexError:
                 pass
-            new_Channel = await discord.Guild.create_text_channel(message.guild, name=sns_Talk[2],category=category, topic="{0}\n팔로워 [{1}]\n게시물 [0]".format(topic, 0)
+            new_Channel = await discord.Guild.create_text_channel(message.guild, name=sns_Talk[2],category=category, topic="{0}\n팔로워 [{1}]\n게시물 [0]".format(topic, 0))
         except IndexError:
             await message.channel.send("잘못 입력했어\nex)에린아 sns 개설 {채널이름} {소개}")
     return None
