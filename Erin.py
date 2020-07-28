@@ -862,8 +862,8 @@ async def Reaction(payload, user, msg, tf):
                         for c in msg.reactions:
                             print(payload.emoji.name)
                             print(c.emoji.name)
-                            print(payload.emoji.name == c.emoji.name)
-                            if payload.emoji.name == c.emoji.name:
+                            print(payload.emoji.name == c.emoji)
+                            if payload.emoji.name == c.emoji:
                                 count = c.count + len(message.guild.get_role(731802943011160165).members)
                                 print(count)
                         if role in user.roles:
