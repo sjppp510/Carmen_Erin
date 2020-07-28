@@ -436,7 +436,6 @@ async def on_message(message):
             return None
         messages = await message.channel.history(limit=100, oldest_first=False).flatten()
         for m in messages:
-            print(m.content)
             if m.author.bot:
                 await m.edit(content=talk[2:])
                 await message.add_reaction("✅")
