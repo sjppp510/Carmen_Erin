@@ -1095,7 +1095,7 @@ async def TheGameOfDeth(message):
             for j in range(0, count):
                 embed.clear_fields()
                 embed.add_field(name="카운트 시작", value="{} -> {}".format(tagger, playerChoice[tagger]))
-                embed.set_footer(text="횟수 : {}//{}".format(j+1, count))
+                embed.set_footer(text="횟수 : {}/{}".format(j+1, count))
                 await embedMessage.edit(embed=embed)
                 tagger = playerChoice[tagger]
                 await asyncio.sleep(1)
