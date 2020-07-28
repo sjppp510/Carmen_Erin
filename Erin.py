@@ -834,7 +834,7 @@ async def Reaction(payload, user, msg, tf):
                     count = 0
                         for c in msg.reactions:
                             if payload.emoji.name == c.emoji:
-                                count = c.count + len(msg.guild.get_role(731802943011160165).members)
+                                count = c.count + len(msg.guild.get_role(731802943011160165).members) - 1
                 else:
                     if not role in user.roles:
                         continue
@@ -842,7 +842,7 @@ async def Reaction(payload, user, msg, tf):
                     count = 0
                         for c in msg.reactions:
                             if payload.emoji.name == c.emoji:
-                                count = c.count + len(msg.guild.get_role(731802943011160165).members)
+                                count = c.count + len(msg.guild.get_role(731802943011160165).members) - 1
                 _topic = snsChannel.topic.replace(tmp_topic, "팔로워 [%s]" % str(count))
                 try:
                     await snsChannel.edit(topic=_topic)
