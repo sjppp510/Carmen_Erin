@@ -828,21 +828,21 @@ async def Reaction(payload, user, msg, tf):
                 snsChannel = discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name=role.name.split("팔로워")[0])
                 tmp_topic = re.findall("팔로워 \[\d+\]", snsChannel.topic)[0]
                 if tf:
-                    count = 0
                     if role in user.roles:
                         continue
                     await user.add_roles(role)
-                    for c in msg.reactions:
-                        if payload.emoji == c.emoji:
-                            count = c.count + len(message.guild.get_role(731802943011160165).members)
-                else:
                     count = 0
+                        for c in msg.reactions:
+                            if payload.emoji.name == c.emoji:
+                                count = c.count + len(msg.guild.get_role(731802943011160165).members)
+                else:
                     if not role in user.roles:
                         continue
                     await user.remove_roles(role)
-                    for c in msg.reactions:
-                        if payload.emoji == c.emoji:
-                            count = c.count + len(message.guild.get_role(731802943011160165).members)
+                    count = 0
+                        for c in msg.reactions:
+                            if payload.emoji.name == c.emoji:
+                                count = c.count + len(msg.guild.get_role(731802943011160165).members)
                 _topic = snsChannel.topic.replace(tmp_topic, "팔로워 [%s]" % str(count))
                 try:
                     await snsChannel.edit(topic=_topic)
@@ -862,16 +862,14 @@ async def Reaction(payload, user, msg, tf):
                         for c in msg.reactions:
                             if payload.emoji.name == c.emoji:
                                 count = c.count + len(msg.guild.get_role(731802943011160165).members)
-                                print(count)
                         if role in user.roles:
                             return None
                         await user.add_roles(role)
                     else:
                         count = 0
                         for c in msg.reactions:
-                            if payload.emoji == c.emoji:
-                                count = c.count + len(message.guild.get_role(731802943011160165).members)
-                                print(count)
+                            if payload.emoji.name == c.emoji:
+                                count = c.count + len(msg.guild.get_role(731802943011160165).members)
                         if not role in user.roles:
                             return None
                         await user.remove_roles(role)
