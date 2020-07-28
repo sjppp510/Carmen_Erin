@@ -834,18 +834,18 @@ async def Reaction(payload, user, msg, tf):
                         continue
                     await user.add_roles(role)
                     for c in msg.reactions:
-                            if payload.emoji == c:
-                                count = c.count + len(message.guild.get_role(731802943011160165).members)
-                                break
+                        if payload.emoji == c:
+                            count = c.count + len(message.guild.get_role(731802943011160165).members)
+                            break
                 else:
                     count = 0
                     if not role in user.roles:
                         continue
                     await user.remove_roles(role)
                     for c in msg.reactions:
-                            if payload.emoji == c:
-                                count = c.count + len(message.guild.get_role(731802943011160165).members)
-                                break
+                        if payload.emoji == c:
+                            count = c.count + len(message.guild.get_role(731802943011160165).members)
+                            break
 
                 _topic = snsChannel.topic.replace(tmp_topic, "팔로워 [%s]" % str(count))
                 try:
