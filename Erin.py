@@ -1039,7 +1039,6 @@ async def TheGameOfDeth(message):
     embed.add_field(name="주의사항", value="술레는 5초안에 숫자를 입력해야해\n멘션후 메세지에 ✅이모지가 있어야해")
     await message.channel.send(embed=embed)
     Players = []
-    tagger = Players[random.randrange(0, len(Players))]
     def checkPlayer(m):
         return not m.author.mention in Players and m.content == "에린아 참가"
     try:
@@ -1068,6 +1067,7 @@ async def TheGameOfDeth(message):
     embed.clear_fields()
     embed.add_field(name="게임 시작", value="더 게임 오브 데쓰~")
     await embedMessage.edit(embed=embed)
+    tagger = Players[random.randrange(0, len(Players))]
     await asyncio.sleep(1)
     while True:
         try:
