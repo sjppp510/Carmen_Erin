@@ -829,15 +829,23 @@ async def Reaction(payload, user, msg, tf):
                 snsChannel = discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name=role.name.split("팔로워")[0])
                 tmp_topic = re.findall("팔로워 \[\d+\]", snsChannel.topic)[0]
                 if tf:
-                    count = int(re.findall("\d+", tmp_topic)[0]) + 1
+                    count = 0
                     if role in user.roles:
                         continue
                     await user.add_roles(role)
+                    for c in msg.reactions:
+                            if payload.emoji == c:
+                                count = c.count + len(message.guild.get_role(731802943011160165).members)
+                                break
                 else:
-                    count = int(re.findall("\d+", tmp_topic)[0]) - 1
+                    count = 0
                     if not role in user.roles:
                         continue
                     await user.remove_roles(role)
+                    for c in msg.reactions:
+                            if payload.emoji == c:
+                                count = c.count + len(message.guild.get_role(731802943011160165).members)
+                                break
 
                 _topic = snsChannel.topic.replace(tmp_topic, "팔로워 [%s]" % str(count))
                 try:
@@ -854,16 +862,23 @@ async def Reaction(payload, user, msg, tf):
                     snsChannel = discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name=role.name.split("팔로워")[0])
                     tmp_topic = re.findall("팔로워 \[\d+\]", snsChannel.topic)[0]
                     if tf:
-                        count = int(re.findall("\d+", tmp_topic)[0]) + 1
+                        count = 0
+                        for c in msg.reactions:
+                            if payload.emoji == c:
+                                count = c.count + len(message.guild.get_role(731802943011160165).members)
+                                break
                         if role in user.roles:
                             return None
                         await user.add_roles(role)
                     else:
-                        count = int(re.findall("\d+", tmp_topic)[0]) - 1
+                        count = 0
+                        for c in msg.reactions:
+                            if payload.emoji == c:
+                                count = c.count + len(message.guild.get_role(731802943011160165).members)
+                                break
                         if not role in user.roles:
                             return None
                         await user.remove_roles(role)
-
                     _topic = snsChannel.topic.replace(tmp_topic, "팔로워 [%s]" % str(count))
                     try:
                         await snsChannel.edit(topic=_topic)
