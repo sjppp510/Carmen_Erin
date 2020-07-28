@@ -1080,17 +1080,17 @@ async def TheGameOfDeth(message):
             embed.clear_fields()
             embed.add_field(name="횟수 : {}".format(count), value="다른 사람을 멘션해줘")
             await embedMessage.edit(embed=embed)
-            playerChoice = []
+            playerChoice = {}
             for i in range(0, len(Players)):
                 msg = await client.wait_for('message', timeout=10, check=check2)
-                playerChoice.append([msg.author.mention, msg.mentions[0].mention])
+                playerChoice[msg.author.mention] = msg.mentions[0].mention
                 await msg.add_reaction("✅")
                     
             for j in range(0, count):
-                embed.add_field(name="카운트 시작", value="{} -> {}".format(tagger, playerChoice[playerChoice.index(tagger)][1]))
+                embed.add_field(name="카운트 시작", value="{} -> {}".format(tagger, playerChoice[tagger]))
                 embed.set_footer(text="횟수 : {}//{}".format(j+1, count))
                 await embedMessage.edit(embed=embed)
-                tagger = Players[Players.index(tagger)][0]
+                tagger = playerChoice[tagger]
                     
             embed.add_field(name="패배", value=tagger)
             await embedMessage.edit(embed=embed)
