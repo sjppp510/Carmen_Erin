@@ -1161,7 +1161,7 @@ async def on_raw_reaction_add(payload):
         print("SNS")
         return None
     msg = await channel.fetch_message(payload.message_id)
-    print(reac)
+    print("reac")
     await Reaction(payload, payload.member, msg, True)
     return None
 
