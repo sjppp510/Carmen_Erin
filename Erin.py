@@ -802,7 +802,7 @@ async def Sns(message, talk):
             await message.channel.send("잘못 입력했어\nex)에린아 sns 개설 {채널이름} {소개}")
     return None
 
-@client.eventR
+@client.event
 async def on_voice_state_update(member, before, after):
     try:
         if member.voice.channel.category.name == "여관":
