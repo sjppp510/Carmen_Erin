@@ -774,7 +774,7 @@ async def Sns(message, talk):
             return None
         try:
             category = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS")
-            if len(discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS").channels) == 20:
+            if len(discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS").channels) >= 20:
                 count = 2
                 while True:
                     category = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS" + str(count))
@@ -784,7 +784,7 @@ async def Sns(message, talk):
                         else:
                             position = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS" + str(count - 1)).position
                         category = await message.guild.create_category_channel(name="SNS"+str(count), position=position)
-                    if len(category.channels) == 20:
+                    if len(category.channels) >= 20:
                         continue
                     break
             role = await message.guild.create_role(name="{0}팔로워".format(sns_Talk[2]), mentionable=True)
