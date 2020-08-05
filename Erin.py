@@ -36,7 +36,7 @@ async def on_message(message):
         collection.update_one({"_id": message.author.id}, {"$set": {"!name": message.author.display_name}},upsert=True)
         collection.update_one({"_id": message.author.id}, {"$inc": {"point": random.randrange(0, 2)}})
         
-        if message.channel.category.name == "SNS":
+        if message.channel.category.name.startswith("SNS"):
             for i in message.role_mentions:
                 if i.name.startswith(message.channel.name):
                     tmp_topic = re.findall("게시물 \[\d+\]", message.channel.topic)[0]
@@ -774,6 +774,19 @@ async def Sns(message, talk):
             return None
         try:
             category = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS")
+            if len(discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS").channels) == 20:
+                count = 2
+                while True:
+                    category = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS" + str(count))
+                    if category == None:
+                        if count == 2:
+                            position = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS").position + 1
+                        else:
+                            position = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS" + str(count - 1)).position
+                        category = await message.guild.create_category_channel(name="SNS"+str(count), position=position)
+                    if len(category.channels) == 20:
+                        continue
+                    break
             role = await message.guild.create_role(name="{0}팔로워".format(sns_Talk[2]), mentionable=True)
             topic = ""
             try:
@@ -1140,7 +1153,7 @@ async def on_raw_reaction_add(payload):
     if payload.member.bot:
         return None
     channel = discord.utils.get(client.get_all_channels(), id=payload.channel_id)
-    if channel.category.name != "SNS":
+    if channel.category.name.startswith("SNS"):
         return None
     msg = await channel.fetch_message(payload.message_id)
     await Reaction(payload, payload.member, msg, True)
