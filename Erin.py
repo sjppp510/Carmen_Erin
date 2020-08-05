@@ -826,42 +826,7 @@ async def on_voice_state_update(member, before, after):
                 await before.channel.delete()
     except (AttributeError, discord.errors.NotFound):
         return None
-
-async def Reaction(payload, user, msg, tf):
-    if msg.content.startswith("__SNS 팔로우__"):
-        print("팔ㄹ로우")
-        follow = msg.content.split("\n")
-        for i in follow:
-            i = i.split(":")
-            print(str(payload.emoji))
-            print(i[0])
-            if str(payload.emoji) == i[0]:
-                role = user.guild.get_role(int(re.findall("\d+", i[1])[0]))
-                snsChannel = discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name=role.name.split("팔로워")[0])
-                tmp_topic = re.findall("팔로워 \[\d+\]", snsChannel.topic)[0]
-                if tf:
-                    count = 0
-                    for c in msg.reactions:
-                        if payload.emoji.name == c.emoji:
-                            count = c.count
-                    if role in user.roles:
-                        return None
-                    await user.add_roles(role)
-                else:
-                    count = 0
-                    for c in msg.reactions:
-                        if payload.emoji.name == c.emoji:
-                            count = c.count
-                    if not role in user.roles:
-                        return None
-                    await user.remove_roles(role)
-                _topic = snsChannel.topic.replace(tmp_topic, "팔로워 [%s]" % str(count))
-                try:
-                    await snsChannel.edit(topic=_topic)
-                except TypeError:
-                    pass
-        return None
-                    
+                  
 async def GuGuDan(message):
     global isPlaying
     isPlaying = True
@@ -1152,16 +1117,49 @@ async def on_reaction_add(reaction, user):
         return None
     return None
 
+async def Reaction(payload, user, msg, tf):
+    if msg.content.startswith("__SNS 팔로우__"):
+        print("팔ㄹ로우")
+        follow = msg.content.split("\n")
+        for i in follow:
+            i = i.split(":")
+            print(str(payload.emoji))
+            print(i[0])
+            if str(payload.emoji) == i[0]:
+                role = user.guild.get_role(int(re.findall("\d+", i[1])[0]))
+                snsChannel = discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name=role.name.split("팔로워")[0])
+                tmp_topic = re.findall("팔로워 \[\d+\]", snsChannel.topic)[0]
+                if tf:
+                    count = 0
+                    for c in msg.reactions:
+                        if payload.emoji.name == c.emoji:
+                            count = c.count
+                    if role in user.roles:
+                        return None
+                    await user.add_roles(role)
+                else:
+                    count = 0
+                    for c in msg.reactions:
+                        if payload.emoji.name == c.emoji:
+                            count = c.count
+                    if not role in user.roles:
+                        return None
+                    await user.remove_roles(role)
+                _topic = snsChannel.topic.replace(tmp_topic, "팔로워 [%s]" % str(count))
+                try:
+                    await snsChannel.edit(topic=_topic)
+                except TypeError:
+                    pass
+        return None
+
 @client.event
 async def on_raw_reaction_add(payload):
     if payload.member.bot:
         return None
     channel = discord.utils.get(client.get_all_channels(), id=payload.channel_id)
     if not channel.category.name.startswith("SNS"):
-        print("SNS")
         return None
     msg = await channel.fetch_message(payload.message_id)
-    print("reac")
     await Reaction(payload, payload.member, msg, True)
     return None
 
