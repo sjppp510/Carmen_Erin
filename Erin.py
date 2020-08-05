@@ -769,9 +769,9 @@ async def Buy(message, talk):
 async def Sns(message, talk):
     sns_Talk = talk.split(" ")
     if sns_Talk[1] == "개설":
-        if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
-            await message.channel.send("권한이 없어")
-            return None
+        #if (message.channel.permissions_for(message.author).value & 0x00000008) != 0x00000008:
+        #    await message.channel.send("권한이 없어")
+        #    return None
         try:
             category = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS")
             if len(discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS").channels) >= 20:
