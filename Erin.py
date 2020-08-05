@@ -802,7 +802,7 @@ async def Sns(message, talk):
             await message.channel.send("잘못 입력했어\nex)에린아 sns 개설 {채널이름} {소개}")
     return None
 
-@client.event
+@client.eventR
 async def on_voice_state_update(member, before, after):
     try:
         if member.voice.channel.category.name == "여관":
@@ -829,9 +829,12 @@ async def on_voice_state_update(member, before, after):
 
 async def Reaction(payload, user, msg, tf):
     if msg.content.startswith("__SNS 팔로우__"):
+        print("팔ㄹ로우")
         follow = msg.content.split("\n")
         for i in follow:
             i = i.split(":")
+            print(str(payload.emoji))
+            print(i[0])
             if str(payload.emoji) == i[0]:
                 role = user.guild.get_role(int(re.findall("\d+", i[1])[0]))
                 snsChannel = discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name=role.name.split("팔로워")[0])
@@ -1155,8 +1158,10 @@ async def on_raw_reaction_add(payload):
         return None
     channel = discord.utils.get(client.get_all_channels(), id=payload.channel_id)
     if not channel.category.name.startswith("SNS"):
+        print("SNS")
         return None
     msg = await channel.fetch_message(payload.message_id)
+    print(reac)
     await Reaction(payload, payload.member, msg, True)
     return None
 
