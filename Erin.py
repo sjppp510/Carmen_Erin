@@ -783,7 +783,8 @@ async def Sns(message, talk):
                             position = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS").position + 1
                         else:
                             position = discord.utils.get(client.get_all_channels(), guild__name=message.guild.name, name="SNS" + str(count - 1)).position
-                        category = await message.guild.create_category(name="SNS"+str(count), position=position)
+                        category = await message.guild.create_category(name="SNS"+str(count))
+                        await category.edit(position=position)
                     if len(category.channels) >= 20:
                         continue
                     break
