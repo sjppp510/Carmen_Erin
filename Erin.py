@@ -1115,12 +1115,9 @@ async def on_reaction_add(reaction, user):
 
 async def Reaction(payload, user, msg, tf):
     if msg.content.startswith("__SNS 팔로우__"):
-        print("팔ㄹ로우")
         follow = msg.content.split("\n")
         for i in follow:
             i = i.split(":")
-            print(str(payload.emoji))
-            print(i[0])
             if str(payload.emoji) == i[0]:
                 role = user.guild.get_role(int(re.findall("\d+", i[1])[0]))
                 snsChannel = discord.utils.get(client.get_all_channels(), guild__name=user.guild.name, name=role.name.split("팔로워")[0])
