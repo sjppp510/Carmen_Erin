@@ -531,6 +531,18 @@ async def on_message(message):
             return None
         await PVP(message, talk)
         return None
+    
+    if talk.startswith("능력치"):
+        stat_Talk = talk.split(" ")
+        collection = db.Stat
+        embed = discord.Embed(title="{0}님의 능력치".format(message.author.display_name), colour=discord.Colour.red())
+        player = collection.find({"_id": message.author.id})[0]
+        embed.add_field(name="공격력", value=player.get("STR"), inline=True)
+        embed.add_field(name="마력", value=player.get("INT"), inline=True)
+        embed.add_field(name="체력", value=player.get("HP"), inline=True)
+        embed.add_field(name="방어력", value=player.get("DEF"), inline=True)
+        await message.channel.send(content=message.author.mention, embed=embed)
+        return None
 
 async def Lotto(message, talk):
     lotto_Talk = talk.split(" ")
@@ -1146,10 +1158,14 @@ async def Stat(message, talk):
     if len(stat_Talk) < 2:
         embed = discord.Embed(title="{0}님의 스탯".format(message.author.display_name), colour=discord.Colour.red())
         player = collection.find({"_id": message.author.id})[0]
-        embed.add_field(name="공격력", value=player.get("STR"), inline=True)
-        embed.add_field(name="마력", value=player.get("INT"), inline=True)
-        embed.add_field(name="체력", value=player.get("HP"), inline=True)
-        embed.add_field(name="방어력", value=player.get("DEF"), inline=True)
+        embed.add_field(name="힘", value=player.get("str"), inline=False)
+        embed.add_field(name="체력", value=player.get("hp"), inline=False)
+        embed.add_field(name="지능", value=player.get("int"), inline=False)
+        embed.add_field(name="마력", value=player.get("mp"), inline=False)
+        embed.add_field(name="신성", value=player.get("fth"), inline=False)
+        embed.add_field(name="리듬감", value=player.get("ryt"), inline=False)
+        embed.add_field(name="손재주", value=player.get("dex"), inline=False)
+        embed.set_footer(text="스탯포인트 : {}".format(player.get("!statPoint")))
         await message.channel.send(content=message.author.mention, embed=embed)
         return None
 
@@ -1198,6 +1214,7 @@ async def Stat(message, talk):
         collection.update_one({"_id": message.author.id}, {"$inc": {"INT": statList[1] * sp}}, upsert=True)
         collection.update_one({"_id": message.author.id}, {"$inc": {"HP": statList[2] * sp}}, upsert=True)
         collection.update_one({"_id": message.author.id}, {"$inc": {"DEF": statList[3] * sp}}, upsert=True)
+        collection.update_one({"_id": message.author.id}, {"$inc": {"!statPoint": -sp}}, upsert=True)
         await message.add_reaction("✅")
         return None
 
