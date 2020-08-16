@@ -32,8 +32,13 @@ async def on_message(message):
         return None
     collection = db.Point
     if message.guild.name == "『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝":
-        collection.update_one({"_id": message.author.id}, {"$setOnInsert": {"!name" : message.author.display_name, "lotto" : [] , "count" : 0, "point" : 0, "daily" : False, "dailyCount" : 0, "caution" : []}}, upsert=True)
-        collection.update_one({"_id": message.author.id}, {"$set": {"!name": message.author.display_name}},upsert=True)
+        utcnow = datetime.datetime.utcnow()
+        time_gap = datetime.timedelta(hours=9)
+        now = utcnow + time_gap
+        collection.update_one({"_id": message.author.id}, {
+            "$setOnInsert": {"!name": message.author.display_name, "lotto": [], "count": 0, "point": 0, "daily": False,
+                             "dailyCount": 0, "caution": [], "!creation_Date": now}}, upsert=True)
+        collection.update_one({"_id": message.author.id}, {"$set": {"!name": message.author.display_name, "!creation_Date": now}}, upsert=True)
         collection.update_one({"_id": message.author.id}, {"$inc": {"point": random.randrange(0, 2)}})
         
         if message.channel.category.name.startswith("SNS"):
@@ -54,6 +59,12 @@ async def on_message(message):
     talk = message.content[len(prefix):]
 
     if talk.startswith("초기화"):
+        utcnow = datetime.datetime.utcnow()
+        time_gap = datetime.timedelta(hours=9)
+        now = utcnow + time_gap
+        #users = collection.find()
+        #for i in users:
+            #collection.update_one(i, {"$set" : {"!creation_Date": now}}, upsert=True)
         await message.channel.send("초기화 되었습니다")
         return None
     if talk.startswith("안녕"):
@@ -508,6 +519,17 @@ async def on_message(message):
             await message.channel.send("이미 진행중인 게임이 있습니다.")
             return None
         await TheGameOfDeth(message)
+        return None
+    
+    if talk.startswith("스탯"):
+        await Stat(message, talk)
+        return None
+    
+    if talk.startswith("대결") or talk.startswith("PVP") :
+        if isPlaying:
+            await message.channel.send("이미 진행중인 게임이 있어")
+            return None
+        await PVP(message, talk)
         return None
 
 async def Lotto(message, talk):
@@ -1064,6 +1086,134 @@ async def TheGameOfDeth(message):
         await embedMessage.edit(embed=embed)
     isPlaying = False
     return None
+
+async def PVP(message, talk):
+    global isPlaying
+    isPlaying = True
+    PVP_Talk = talk.split(" ")
+    collection = db.Stat
+    player1_id = message.author.id
+    player2_id = int(re.findall("\d+", PVP_Talk[1])[0])
+    player1 = message.guild.get_member(player1_id)
+    player2 = message.guild.get_member(player2_id)
+    if not list(collection.find({"_id": player1_id})) or not list(collection.find({"_id": player2_id})):
+        await message.channel.send("스탯이 없어")
+        return None
+    def switch(value):
+        # 공 - 마 - 체 - 방
+        return {
+            0: ["공격력", "STR"],
+            1: ["마력", "INT"],
+            2: ["체력", "HP"],
+            3: ["방어력", "DEF"]
+        }.get(value)
+    embed = discord.Embed(title="{0}님과 {1}님의 대결".format(player1.display_name, player2.display_name), colour=discord.Colour.red())
+    embedMessage = await message.channel.send(embed=embed)
+    player1_Stat = collection.find({"_id": player1_id})[0]
+    player2_Stat = collection.find({"_id": player2_id})[0]
+    winCount = 0 #양수면 player1승리, 음수면 player2승리, 0이면 무승부
+    for i in range(0, 4):
+        title, stat = switch(i)
+        embed.add_field(name=title, value="승자 : ", inline=False)
+        embed.add_field(name=player1.display_name, value="{0} : {1}".format(title, player1_Stat.get(stat)), inline=True)
+        embed.add_field(name=player2.display_name, value="{0} : {1}".format(title, player2_Stat.get(stat)), inline=True)
+        await embedMessage.edit(embed=embed)
+        if player1_Stat.get(stat) > player2_Stat.get(stat):
+            winCount += 1
+            winPlayer = player1
+        else:
+            winCount -= 1
+            winPlayer = player2
+        await asyncio.sleep(1)
+        embed.set_field_at(i, name=title, value="승자 : {0}".format(winPlayer.diplay_name))
+        embed.remove_field(i + 1)
+        embed.remove_field(i + 1)
+        await embedMessage.edit(embed=embed)
+        await asyncio.sleep(1)
+    if winCount == 0:
+        await message.channel.send("무승부")
+    elif winCount > 0:
+        await message.channel.send("{} 승리".format(player1.mention))
+    else:
+        await message.channel.send("{} 승리".format(player2.mention))
+
+    isPlaying = False
+    
+async def Stat(message, talk):
+    #순서는 공격력 - 마력 - 체력 - 방어력
+    stat_Talk = talk.split(" ")
+    collection = db.Stat
+    if len(stat_Talk) < 2:
+        embed = discord.Embed(title="{0}님의 스탯".format(message.author.display_name), colour=discord.Colour.red())
+        player = collection.find({"_id": message.author.id})[0]
+        embed.add_field(name="공격력", value=player.get("STR"), inline=True)
+        embed.add_field(name="마력", value=player.get("INT"), inline=True)
+        embed.add_field(name="체력", value=player.get("HP"), inline=True)
+        embed.add_field(name="방어력", value=player.get("DEF"), inline=True)
+        await message.channel.send(content=message.author.mention, embed=embed)
+        return None
+
+    if stat_Talk[1] == "생성":
+        if not list(collection.find({"_id" : message.author.id})):
+            utcnow = datetime.datetime.utcnow()
+            time_gap = datetime.timedelta(hours=9)
+            now = utcnow + time_gap
+            collection.update_one({"_id": message.author.id}, {
+                "$setOnInsert": {"!name": message.author.display_name, "!creation_Date": now, "!statPoint" : 0, "STR": 0, "INT": 0,
+                                 "HP": 0, "DEF": 0, "str": 0, "int": 0, "hp": 0, "mp": 0, "fth" : 0, "ryt" : 0, "dex" : 0}}, upsert=True)#fth : 신성력, ryt : 리듬감, dex : 손재주
+            await message.add_reaction("✅")
+            return None
+        else:
+            await message.channel.send("이미 생성되었어")
+            return None
+
+    if not list(collection.find({"_id": message.author.id})):
+        await message.channel.send("스탯이 없어\n'에린아 스탯 생성' 으로 스탯을 만들어")
+        return None
+
+    collection.update_one({"_id": message.author.id}, {"$set": {"!name": message.author.display_name}}, upsert=True)
+    if stat_Talk[1] == "힘" or stat_Talk[1] == "체력" or stat_Talk[1] == "지능" or stat_Talk[1] == "마력" or stat_Talk[1] == "신성력" or stat_Talk[1] == "리듬감" or stat_Talk[1] == "손재주":
+        if len(stat_Talk) == 2:
+            sp = 1
+        else:
+            sp = int(stat_Talk[2])
+        def switch(value):
+            #공 - 마 - 체 - 방
+            return {
+                "힘": ["str", [10, 0, 5, 5]],
+                "체력": ["hp", [0, 0, 10, 10]],
+                "지능": ["int", [10, 5, 0, 5]],
+                "마력": ["mp", [5, 10, 0, 5]],
+                "신성력": ["fth", [10, 5, 5, 0]],
+                "리듬감": ["ryt", [10, 10, 0, 0]],
+                "손재주": ["dex", [10, 0, 10, 0]]
+            }.get(value)
+        stat, statList = switch(stat_Talk[1])
+        player = collection.find({"_id": message.author.id})[0]
+        if player.get("!statPoint") < sp:
+            await message.channel.send("스탯포인트가 부족해\n스탯포인트 : " + player.get("!statPoint"))
+            return None
+        collection.update_one({"_id": message.author.id}, {"$inc": {stat: sp}}, upsert=True)
+        collection.update_one({"_id": message.author.id}, {"$inc": {"STR": statList[0] * sp}}, upsert=True)
+        collection.update_one({"_id": message.author.id}, {"$inc": {"INT": statList[1] * sp}}, upsert=True)
+        collection.update_one({"_id": message.author.id}, {"$inc": {"HP": statList[2] * sp}}, upsert=True)
+        collection.update_one({"_id": message.author.id}, {"$inc": {"DEF": statList[3] * sp}}, upsert=True)
+        await message.add_reaction("✅")
+        return None
+
+    if stat_Talk[1].startswith("<@"):
+        user_ID = int(re.findall("\d+", stat_Talk[1])[0])
+        if not list(collection.find({"_id": user_ID})):
+            await message.channel.send("스탯이 없어")
+            return None
+        embed = discord.Embed(title="{0}님의 스탯".format(message.guild.get_member(user_ID).display_name), colour=discord.Colour.red())
+        player = collection.findOne({"_id" : user_ID})
+        embed.add_field(name="공격력", value=player.get("STR"),inline=True)
+        embed.add_field(name="마력", value=player.get("INT"), inline=True)
+        embed.add_field(name="체력", value=player.get("HP"), inline=True)
+        embed.add_field(name="방어력", value=player.get("DEF"), inline=True)
+        await message.channel.send(content=message.guild.get_member(user_ID).mention,embed=embed)
+        return None
 
 @client.event
 async def on_reaction_add(reaction, user):
