@@ -1218,7 +1218,7 @@ async def Stat(message, talk):
         stat, statList = switch(stat_Talk[1])
         player = collection.find({"_id": message.author.id})[0]
         if player.get("!statPoint") < sp:
-            await message.channel.send("스탯포인트가 부족해\n스탯포인트 : " + player.get("!statPoint"))
+            await message.channel.send("스탯포인트가 부족해\n스탯포인트 : " + str(player.get("!statPoint")))
             return None
         collection.update_one({"_id": message.author.id}, {"$inc": {stat: sp}}, upsert=True)
         collection.update_one({"_id": message.author.id}, {"$inc": {"STR": statList[0] * sp}}, upsert=True)
