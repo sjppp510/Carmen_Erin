@@ -533,10 +533,11 @@ async def on_message(message):
         return None
     
     if talk.startswith("능력치"):
+        collection = db.Stat
         embed = discord.Embed(title="{0}님의 능력치".format(message.author.display_name), colour=discord.Colour.red())
         player = collection.find({"_id": message.author.id})[0]
         if talk.startswith("능력치 <@"):
-            user_ID = int(re.findall("\d+", stat_Talk[1])[0])
+            user_ID = int(re.findall("\d+", talk)[0])
             if not list(collection.find({"_id": user_ID})):
                 await message.channel.send("능력치가 없어")
                 return None
@@ -546,7 +547,6 @@ async def on_message(message):
             if not list(collection.find({"_id": message.author.id})):
                 await message.channel.send("능력치가 없어")
                 return None
-        collection = db.Stat
         embed.add_field(name="공격력", value=player.get("STR"), inline=True)
         embed.add_field(name="마력", value=player.get("INT"), inline=True)
         embed.add_field(name="체력", value=player.get("HP"), inline=True)
