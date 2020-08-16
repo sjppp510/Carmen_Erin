@@ -88,7 +88,7 @@ async def on_message(message):
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("사랑해"):
-        Chat = ["나도 사랑해", "응", "!", "어머나", "나도 날 사랑해"]
+        Chat = ["나도 사랑해", "응", "!", "어머나", "나도 날 사랑해" , "(•᷄⌓•᷅ )"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("좋아해"):
