@@ -541,7 +541,7 @@ async def on_message(message):
             if not list(collection.find({"_id": user_ID})):
                 await message.channel.send("능력치가 없어")
                 return None
-            embed = discord.Embed(title="{0}님의 스탯".format(message.guild.get_member(user_ID).display_name), colour=discord.Colour.red())
+            embed = discord.Embed(title="{0}님의 능력치".format(message.guild.get_member(user_ID).display_name), colour=discord.Colour.red())
             player = collection.find({"_id" : user_ID})[0]
         else:
             if not list(collection.find({"_id": message.author.id})):
