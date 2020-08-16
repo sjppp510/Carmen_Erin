@@ -1125,7 +1125,7 @@ async def PVP(message, talk):
             winCount -= 1
             winPlayer = player2
         await asyncio.sleep(1)
-        embed.set_field_at(i, name=title, value="승자 : {0}".format(winPlayer.diplay_name))
+        embed.set_field_at(i, name=title, value="승자 : {0}".format(winPlayer.display_name))
         embed.remove_field(i + 1)
         embed.remove_field(i + 1)
         await embedMessage.edit(embed=embed)
