@@ -533,7 +533,6 @@ async def on_message(message):
         return None
     
     if talk.startswith("능력치"):
-        stat_Talk = talk.split(" ")
         collection = db.Stat
         embed = discord.Embed(title="{0}님의 능력치".format(message.author.display_name), colour=discord.Colour.red())
         player = collection.find({"_id": message.author.id})[0]
