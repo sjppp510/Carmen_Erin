@@ -542,7 +542,7 @@ async def on_message(message):
                 await message.channel.send("능력치가 없어")
                 return None
             embed = discord.Embed(title="{0}님의 스탯".format(message.guild.get_member(user_ID).display_name), colour=discord.Colour.red())
-            player = collection.findOne({"_id" : user_ID})
+            player = collection.find({"_id" : user_ID})[0]
         else:
             if not list(collection.find({"_id": message.author.id})):
                 await message.channel.send("능력치가 없어")
@@ -1235,7 +1235,7 @@ async def Stat(message, talk):
             await message.channel.send("스탯이 없어")
             return None
         embed = discord.Embed(title="{0}님의 스탯".format(message.guild.get_member(user_ID).display_name), colour=discord.Colour.red())
-        player = collection.findOne({"_id" : user_ID})
+        player = collection.find({"_id" : user_ID})[0]
         embed.add_field(name="힘", value=player.get("str"), inline=False)
         embed.add_field(name="체력", value=player.get("hp"), inline=False)
         embed.add_field(name="지능", value=player.get("int"), inline=False)
