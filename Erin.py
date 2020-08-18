@@ -38,8 +38,7 @@ async def on_message(message):
         collection.update_one({"_id": message.author.id}, {
             "$setOnInsert": {"!name": message.author.display_name, "lotto": [], "count": 0, "point": 0, "daily": False,
                              "dailyCount": 0, "caution": [], "!creation_Date": now}}, upsert=True)
-        collection.update_one({"_id": message.author.id}, {"$set": {"!name": message.author.display_name, "!creation_Date": now}}, upsert=True)
-        collection.update_one({"_id": message.author.id}, {"$inc": {"point": random.randrange(0, 2)}})
+        collection.update_one({"_id": message.author.id}, {"$set": {"!name": message.author.display_name, "!creation_Date": now}, "$inc": {"point": random.randrange(0, 2)}}, upsert=True)
         
         if message.channel.category.name.startswith("SNS"):
             for i in message.role_mentions:
