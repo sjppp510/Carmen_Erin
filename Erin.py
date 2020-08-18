@@ -29,7 +29,8 @@ async def on_ready():
     
 @client.event
 async def on_error(event, *args, **kwargs):
-    owner = await client.application_info().owner
+    appInfo = await client.application_info()
+    owner = appInfo.owner
     if len(args) > 0:
         await owner.send("{0} : {1}\n{2} 에러\n에러메세지 : {3}".format(args[0].author.display_name, args[0].content, event, traceback.format_exc()))
         return None
