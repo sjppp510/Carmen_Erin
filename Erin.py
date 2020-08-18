@@ -69,8 +69,8 @@ async def on_message(message):
     if talk.startswith("재시작"):
         access_token = os.environ["BOT_TOKEN"]
         await client.close()
-        client.connect()
-        client.rogin(token=access_token)
+        await client.connect()
+        await client.rogin(token=access_token)
         await message.channel.send("재시작 되었습니다.")
     if talk.startswith("초기화"):
         utcnow = datetime.datetime.utcnow()
