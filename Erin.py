@@ -62,7 +62,7 @@ async def on_message(message):
 
     talk = message.content[len(prefix):]
 
-    if talk.startswith(재시작):
+    if talk.startswith("재시작"):
         client.clear()
         await message.channel.send("재시작 되었습니다.")
     if talk.startswith("초기화"):
