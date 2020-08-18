@@ -5,6 +5,7 @@ import time
 import re
 import operator
 import asyncio
+import traceback
 from pymongo import MongoClient
 from discord.ext import tasks
 import os
