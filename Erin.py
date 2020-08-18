@@ -27,11 +27,17 @@ async def on_ready():
     await client.change_presence(status=discord.Status.online, activity=game)
 
 @client.event
+async def on_error(event, *args, **kwargs):
+    print(event)
+    
+@client.event
 async def on_message(message):
+    print("test")
     if message.author.bot:
         return None
     collection = db.Point
-    if message.guild.name == "『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝":
+    try:
+        if message.guild.name == "『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝":
         utcnow = datetime.datetime.utcnow()
         time_gap = datetime.timedelta(hours=9)
         now = utcnow + time_gap
@@ -51,7 +57,10 @@ async def on_message(message):
                     except TypeError:
                         pass
                     return None
+    except discord.errors.HTTPException:
+        
 
+            
     if not(message.content.startswith(prefix)):
         return None
 
