@@ -28,10 +28,7 @@ async def on_ready():
     
 @client.event
 async def on_error(event, *args, **kwargs):
-    print(type(args[0]))
-    print(args[0][0])
-    print(args[0].get(message_id))
-    await discord.utils.get(client.get_all_channels(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", name="봇-test").send("{0} 에러\n에러메세지 : {1}".format(event, args[0]))
+    await discord.utils.get(client.get_all_channels(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", name="봇-test").send("{0} 에러\n에러메세지 : {1}\n{2} : {3}".format(event, args[0], args[0].author.display_name, args[0].content))
     
 @client.event
 async def on_message(message):
