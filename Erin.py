@@ -68,6 +68,7 @@ async def on_message(message):
 
     if talk.startswith("재시작"):
         access_token = os.environ["BOT_TOKEN"]
+        client.clear()
         await client.close()
         client.run(access_token)
         await message.channel.send("재시작 되었습니다.")
