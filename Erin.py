@@ -25,10 +25,6 @@ async def on_ready():
     game = discord.Game("베타테스트")
     Daily.start()
     await client.change_presence(status=discord.Status.online, activity=game)
-
-@client.event
-async def on_error(event, *args, **kwargs):
-    print(event)
     
 @client.event
 async def on_message(message):
