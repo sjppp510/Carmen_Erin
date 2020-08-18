@@ -27,6 +27,10 @@ async def on_ready():
     await client.change_presence(status=discord.Status.online, activity=game)
     
 @client.event
+async def on_error(event, *args, **kwargs):
+    await discord.utils.get(client.get_all_channels(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", name="봇-test").send("{0} 에러n\에러메세지 : {1}".format(args[0]))
+    
+@client.event
 async def on_message(message):
     print("test")
     if message.author.bot:
@@ -63,8 +67,8 @@ async def on_message(message):
     talk = message.content[len(prefix):]
 
     if talk.startswith("재시작"):
-        client.close()
-        client.start()
+        await client.close()
+        await client.start()
         await message.channel.send("재시작 되었습니다.")
     if talk.startswith("초기화"):
         utcnow = datetime.datetime.utcnow()
