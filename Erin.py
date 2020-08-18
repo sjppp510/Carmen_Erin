@@ -66,7 +66,10 @@ async def on_message(message):
                             pass
                         return None
     except discord.errors.HTTPException:
-        print("에러난거")
+        appInfo = await client.application_info()
+        owner = appInfo.owner
+        await owner.send("그 투매니 어쩌구 에러\n{}".format(traceback.format_exc()))
+        return None
 
             
     if not(message.content.startswith(prefix)):
