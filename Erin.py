@@ -68,6 +68,7 @@ async def on_message(message):
 
     if talk.startswith("재시작"):
         access_token = os.environ["BOT_TOKEN"]
+        await client.close()
         await client.logout()
         await client.connect()
         await client.login(token=access_token)
