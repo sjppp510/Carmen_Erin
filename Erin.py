@@ -38,25 +38,25 @@ async def on_message(message):
     collection = db.Point
     try:
         if message.guild.name == "『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝":
-        utcnow = datetime.datetime.utcnow()
-        time_gap = datetime.timedelta(hours=9)
-        now = utcnow + time_gap
-        collection.update_one({"_id": message.author.id}, {
-            "$setOnInsert": {"!name": message.author.display_name, "lotto": [], "count": 0, "point": 0, "daily": False,
-                             "dailyCount": 0, "caution": [], "!creation_Date": now}}, upsert=True)
-        collection.update_one({"_id": message.author.id}, {"$set": {"!name": message.author.display_name, "!creation_Date": now}, "$inc": {"point": random.randrange(0, 2)}}, upsert=True)
+            utcnow = datetime.datetime.utcnow()
+            time_gap = datetime.timedelta(hours=9)
+            now = utcnow + time_gap
+            collection.update_one({"_id": message.author.id}, {
+                "$setOnInsert": {"!name": message.author.display_name, "lotto": [], "count": 0, "point": 0, "daily": False,
+                                "dailyCount": 0, "caution": [], "!creation_Date": now}}, upsert=True)
+            collection.update_one({"_id": message.author.id}, {"$set": {"!name": message.author.display_name, "!creation_Date": now}, "$inc": {"point": random.randrange(0, 2)}}, upsert=True)
         
-        if message.channel.category.name.startswith("SNS"):
-            for i in message.role_mentions:
-                if i.name.startswith(message.channel.name):
-                    tmp_topic = re.findall("게시물 \[\d+\]", message.channel.topic)[0]
-                    number = int(re.findall("\d+", tmp_topic)[0]) + 1
-                    _topic = message.channel.topic.replace(tmp_topic, "게시물 [%s]" % str(number))
-                    try:
-                        await message.channel.edit(topic=_topic)
-                    except TypeError:
-                        pass
-                    return None
+            if message.channel.category.name.startswith("SNS"):
+                for i in message.role_mentions:
+                    if i.name.startswith(message.channel.name):
+                        tmp_topic = re.findall("게시물 \[\d+\]", message.channel.topic)[0]
+                        number = int(re.findall("\d+", tmp_topic)[0]) + 1
+                        _topic = message.channel.topic.replace(tmp_topic, "게시물 [%s]" % str(number))
+                        try:
+                            await message.channel.edit(topic=_topic)
+                        except TypeError:
+                            pass
+                        return None
     except discord.errors.HTTPException:
         print("에러난거")
 
