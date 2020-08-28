@@ -251,6 +251,11 @@ async def on_message(message):
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("여림") or talk.startswith("유령"):
+        if random.randrange(0, 2) == 0:
+            await message.channel.send("기획팀을 나가게 된다면 꼭 그에게 고백하겠어!")
+            await asyncio.sleep(1)
+            await message.channel.send("해치웠나?")
+            return None
         Chat = ["여리미눈 도니 됴아>_<"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
