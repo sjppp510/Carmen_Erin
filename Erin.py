@@ -265,8 +265,7 @@ async def on_message(message):
             await message.channel.send("기획팀이셔")
         return None
     if talk.startswith("세라") or talk.startswith("율아") or talk.startswith("민율아"):
-        #Chat = ["귀여운 기획팀 분이야!", "세라님 귀엽지", "세라님 섹시하지", "세라님 섹시하고 깜찍하고 발랄하고 예쁘고 기엽고 매력적이고 이쁘고 에린이꺼❤️"]
-        Chat = ["세라님 생일축하해!"]
+        Chat = ["귀여운 기획팀 분이야!", "율아님 귀엽지", "율아님 섹시하지", "율아님 섹시하고 깜찍하고 발랄하고 예쁘고 기엽고 매력적이고 이쁘고 에린이꺼❤️"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("디자인팀"):
