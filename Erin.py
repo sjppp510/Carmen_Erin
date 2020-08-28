@@ -226,10 +226,6 @@ async def on_message(message):
         await asyncio.sleep(1)
         await message.channel.send("반갑다요?")
         return None
-    if talk.startswith("Teacat"):
-        Chat = ["나를 개방해주신 분이야!", "홍고"]
-        await message.channel.send(Chat[random.randrange(0, len(Chat))])
-        return None
     if talk.startswith("안내팀"):
         Chat = ["우리 게임 tutorial진행해주는 팀!"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
@@ -256,7 +252,7 @@ async def on_message(message):
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("여림") or talk.startswith("유령"):
-        Chat = ["여리미눈 도니 됴아"]
+        Chat = ["여리미눈 도니 됴아>_<"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("디자인팀"):
