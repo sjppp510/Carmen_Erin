@@ -238,6 +238,11 @@ async def on_message(message):
         Chat = ["귀여우시고 목소리 예쁘신 안내팀!"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
+    if talk.startswith("유연"):
+        await message.channel.send("안내팀의 노예지")
+        await asyncio.sleep(1)
+        await message.channel.send("빠져나갈 수 없어 그는..")
+        return None
     if talk.startswith("기획팀"):
         Chat = ["우리 서버 이벤트 기획하는 팀!"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
@@ -246,26 +251,12 @@ async def on_message(message):
         Chat = ["기획팀인데", "생선", "밥 먹을 때마다 달아두는 거"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
-    if talk.startswith("태건"):
-        if (random.randrange(0, 2) == 0):
-            await message.channel.send("엄")
-            await message.channel.send("준")
-            await message.channel.send("식")
-            await message.channel.send("화이팅!")
-        else:
-            await message.channel.send("기획팀이셔")
-        return None
-    if talk.startswith("근우"):
-        if (random.randrange(0, 2) == 0):
-            await message.channel.send("엄")
-            await message.channel.send("준")
-            await message.channel.send("식")
-            await message.channel.send("화이팅!")
-        else:
-            await message.channel.send("기획팀이셔")
-        return None
     if talk.startswith("세라") or talk.startswith("율아") or talk.startswith("민율아"):
         Chat = ["귀여운 기획팀 분이야!", "율아님 귀엽지", "율아님 섹시하지", "율아님 섹시하고 깜찍하고 발랄하고 예쁘고 기엽고 매력적이고 이쁘고 에린이꺼❤️"]
+        await message.channel.send(Chat [random.randrange(0, len(Chat))])
+        return None
+    if talk.startswith("여림") or talk.startswith("유령"):
+        Chat = ["여리미눈 도니 됴아"]
         await message.channel.send(Chat [random.randrange(0, len(Chat))])
         return None
     if talk.startswith("디자인팀"):
