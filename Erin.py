@@ -40,7 +40,6 @@ async def on_error(event, *args, **kwargs):
     
 @client.event
 async def on_message(message):
-    print("test")
     if message.author.bot:
         return None
     collection = db.Point
