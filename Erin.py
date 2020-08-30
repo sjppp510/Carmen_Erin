@@ -453,7 +453,10 @@ async def on_message(message):
         await message.clear_reactions()
         await message.add_reaction("✅")
         await asyncio.sleep(5)
-        await message.delete()
+        try:
+            await message.delete()
+        except discord.errors.NotFound:
+            return None
         return None
     
     if talk.startswith("팔로우생성"):
