@@ -439,7 +439,7 @@ async def on_message(message):
     if talk.startswith("삭") or talk.startswith("청") or talk.startswith("지"):#삭제 청소 지워
         def is_me(m):
             if m.author == message.author:
-                if not m == message:
+                if not m.content == message.content:
                     return True
         try:
             talk = talk.split(" ")
