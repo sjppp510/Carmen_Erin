@@ -72,7 +72,7 @@ async def on_message(message):
         return None
 
             
-    if not(message.content.startswith(prefix)) or not(message.content.startswith(prefix2)):
+    if not(message.content.startswith(prefix)) and not(message.content.startswith(prefix2)):
         return None
 
     talk = message.content.split(" ")[1]
