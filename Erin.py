@@ -452,6 +452,8 @@ async def on_message(message):
         await message.channel.purge(limit=_limit+1, check=is_me)
         await message.clear_reactions()
         await message.add_reaction("✅")
+        await asyncio.sleep(5)
+        await message.delete()
         return None
     
     if talk.startswith("팔로우생성"):
