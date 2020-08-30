@@ -75,7 +75,7 @@ async def on_message(message):
     if not(message.content.startswith(prefix)) and not(message.content.startswith(prefix2)):
         return None
 
-    talk = message.content.split(" ")[1]
+    talk = message.content.split(" ")[1:]
 
     if talk.startswith("재시작"):
         os.system("python Erin.py")
