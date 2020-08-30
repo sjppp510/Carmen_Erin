@@ -16,6 +16,7 @@ connection = MongoClient(mongo_URL)
 db = connection.get_database("Erin")
 
 prefix = "에린아 "
+prefix2 = "에"
 
 isPlaying = False
 
@@ -71,7 +72,7 @@ async def on_message(message):
         return None
 
             
-    if not(message.content.startswith(prefix)):
+    if not(message.content.startswith(prefix) or not(message.content.startswith(prefix2)):
         return None
 
     talk = message.content[len(prefix):]
@@ -435,7 +436,7 @@ async def on_message(message):
         await message.channel.send(message.author.mention + "님의 ID는 \n" + "```" + str(message.author.id) + "```")
         return None
     
-    if talk.startswith("삭제") or talk.startswith("청소") or talk.startswith("지워"):
+    if talk.startswith("삭") or talk.startswith("청") or talk.startswith("지"):#삭제 청소 지워
         def is_me(m):
             if m.author == message.author:
                 if not m.content.startswith("에린아 삭제") and not m.content.startswith("에린아 청소") and not m.content.startswith("에린아 지워"):
