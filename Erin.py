@@ -16,7 +16,7 @@ connection = MongoClient(mongo_URL)
 db = connection.get_database("Erin")
 
 prefix = "에린아 "
-prefix2 = "에"
+prefix2 = "에 "
 
 isPlaying = False
 
@@ -71,11 +71,13 @@ async def on_message(message):
         await owner.send("그 투매니 어쩌구 에러\n{}".format(traceback.format_exc()))
         return None
 
-            
-    if not(message.content.startswith(prefix)) and not(message.content.startswith(prefix2)):
+    talk = ""
+    if message.content.startswith(prefix):
+        talk = message.content[len(prefix):]
+    elif message.content.startswith(prefix2):
+        talk = message.content[len(prefix2):]
+    else:
         return None
-
-    talk = message.content.split(" ")[1:]
 
     if talk.startswith("재시작"):
         os.system("python Erin.py")
