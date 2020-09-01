@@ -179,7 +179,12 @@ async def on_message(message):
         await message.channel.send(Chat[random.randrange(0, len(Chat))])
         return None
     if talk.startswith("화내"):
-        await message.channel.send("😠")
+        msg = await message.channel.send("😠")
+        await asyncio.sleep(5)
+        try:
+            await msg.delete()
+        except discord.errors.NotFound:
+            return None
         return None
     if talk.startswith("이름"):
         await message.channel.send("'아름다운' 이라는 뜻을 가진 라틴어 '에일린' 에서 따왔어")
