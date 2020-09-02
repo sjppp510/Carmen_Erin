@@ -34,9 +34,7 @@ async def on_ready():
 async def on_message(message):
     if message.author.bot:
         return None
-    if message.channel == discord.DMChannel:
-        print(message.content)
-        return None
+    print(message.content)
     collection = db.Point
     try:
         if message.guild.name == "『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝":
