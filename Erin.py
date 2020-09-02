@@ -79,7 +79,11 @@ async def on_message(message):
         talk = message.content[len(prefix2):]
     else:
         return None
-
+    
+    if message.channel == discord.DMChannel:
+        print(message.content)
+        return None
+    
     if talk.startswith("재시작"):
         os.system("python Erin.py")
         await message.channel.send("재시작 되었습니다.")
