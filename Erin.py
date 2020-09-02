@@ -27,13 +27,12 @@ async def on_ready():
     game = discord.Game("베타테스트")
     Daily.start()
     await client.change_presence(status=discord.Status.online, activity=game)
-    await discord.utils.get(client.get_all_members(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", id=740063353010913310).send("안ㄴ녕 카스타뎅")
     
 @client.event
 async def on_error(event, *args, **kwargs):
     appInfo = await client.application_info()
     owner = appInfo.owner
-    if len(args) > 0 args[0].channel != None:
+    if len(args) > 0 and args[0].channel != None:
         await owner.send("{0} : {1}\n{2}\n{3} 에러\n에러메세지 : {4}".format(args[0].author.display_name, args[0].content, args[0].channel.name, event, traceback.format_exc()))
         return None
     else:
@@ -83,9 +82,6 @@ async def on_message(message):
     else:
         return None
     
-    if talk.startswith("재시작"):
-        os.system("python Erin.py")
-        await message.channel.send("재시작 되었습니다.")
     if talk.startswith("초기화"):
         utcnow = datetime.datetime.utcnow()
         time_gap = datetime.timedelta(hours=9)
