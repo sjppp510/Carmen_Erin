@@ -46,7 +46,7 @@ async def on_message(message):
     if type(message.channel) == discord.DMChannel:
         appInfo = await client.application_info()
         owner = appInfo.owner
-        owner.send("{0} : {1}".format(message.author.name, message.content))
+        await owner.send("{0} : {1}".format(message.author.name, message.content))
         return None
     collection = db.Point
     try:
