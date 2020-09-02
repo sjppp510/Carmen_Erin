@@ -44,6 +44,9 @@ async def on_error(event, *args, **kwargs):
 async def on_message(message):
     if message.author.bot:
         return None
+    if message.channel == discord.DMChannel:
+        print(message.content)
+        return None
     collection = db.Point
     try:
         if message.guild.name == "『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝":
@@ -78,10 +81,6 @@ async def on_message(message):
     elif message.content.startswith(prefix2):
         talk = message.content[len(prefix2):]
     else:
-        return None
-    
-    if message.channel == discord.DMChannel:
-        print(message.content)
         return None
     
     if talk.startswith("재시작"):
