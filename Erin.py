@@ -28,13 +28,24 @@ async def on_ready():
     Daily.start()
     await client.change_presence(status=discord.Status.online, activity=game)
     
-
+@client.event
+async def on_error(event, *args, **kwargs):
+    appInfo = await client.application_info()
+    owner = appInfo.owner
+    if len(args) > 0 and args[0].channel != None:
+        await owner.send("{0} : {1}\n{2}\n{3} 에러\n에러메세지 : {4}".format(args[0].author.display_name, args[0].content, args[0].channel.name, event, traceback.format_exc()))
+        return None
+    else:
+        await owner.send("{0}에러\n{1}".format(event, traceback.format_exc()))
+        return None
     
 @client.event
 async def on_message(message):
     if message.author.bot:
         return None
     if type(message.channel) == discord.DMChannel:
+        appInfo = await client.application_info()
+        owner = appInfo.owner
         owner.send("{0} : {1}".format(message.author.name, message.content))
         return None
     collection = db.Point
