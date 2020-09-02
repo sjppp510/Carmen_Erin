@@ -43,9 +43,9 @@ async def on_error(event, *args, **kwargs):
 async def on_message(message):
     if message.author.bot:
         return None
-    print(message.content)
-    print(type(message.channel))
-    print(type(message.channel) == discord.DMChannel)
+    if type(message.channel) == discord.DMChannel:
+        owner.send("{0} : {1}".format(message.author.name, message.content))
+        return None
     collection = db.Point
     try:
         if message.guild.name == "『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝":
