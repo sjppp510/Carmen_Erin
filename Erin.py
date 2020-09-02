@@ -27,6 +27,7 @@ async def on_ready():
     game = discord.Game("베타테스트")
     Daily.start()
     await client.change_presence(status=discord.Status.online, activity=game)
+    await discord.utils.get(client.get_all_members(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", id=740063353010913310).send("안ㄴ녕 카스타뎅")
     
 @client.event
 async def on_error(event, *args, **kwargs):
@@ -1365,7 +1366,7 @@ async def Daily():
     utcnow = datetime.datetime.utcnow()
     time_gap = datetime.timedelta(hours=9)
     now = utcnow + time_gap
-    if now.hour == 6:
+    if now.hour == 0:
         collection = db.Point
         users = collection.find()
         for i in users:
@@ -1373,6 +1374,7 @@ async def Daily():
                 collection.update_one(i, {"$set": {"dailyCount": 0}})
             collection.update_one(i , {"$set" : {"count" : 0, "daily" : False}})
         await discord.utils.get(client.get_all_channels(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", name="봇-test").send("에린 초기화")
+        await discord.utils.get(client.get_all_members(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", id=740063353010913310).send("보고싶어")
 
 async def Help(message):
     embed = discord.Embed(title= "에린이 도움말",colour=discord.Colour.red())
