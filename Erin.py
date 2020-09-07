@@ -1375,7 +1375,7 @@ async def Daily():
                 collection.update_one(i, {"$set": {"dailyCount": 0}})
             collection.update_one(i , {"$set" : {"count" : 0, "daily" : False}})
         await discord.utils.get(client.get_all_channels(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", name="봇-test").send("에린 초기화")
-        await discord.utils.get(client.get_all_members(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", id=740063353010913310).send("보고싶어")
+        #await discord.utils.get(client.get_all_members(), guild__name="『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝", id=740063353010913310).send("보고싶어")
 
 async def Help(message):
     embed = discord.Embed(title= "에린이 도움말",colour=discord.Colour.red())
