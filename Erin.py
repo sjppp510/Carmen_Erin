@@ -24,9 +24,10 @@ isPlaying = False
 async def on_ready():
     print(client.user.id)
     print("ready")
-    game = discord.Game("베타테스트")
+    #game = discord.Game("베타테스트")
     Daily.start()
-    await client.change_presence(status=discord.Status.online, activity=game)
+    await client.change_presence(status=discord.Status.online)
+    #, activity=game
     
 @client.event
 async def on_error(event, *args, **kwargs):
