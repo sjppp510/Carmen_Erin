@@ -856,10 +856,8 @@ async def Sns(message, talk):
 async def on_voice_state_update(member, before, after):
     try:
         if member.voice.channel.category.name == "여관" or member.voice.channel.category.name == "• 방생성 •":
-            print("방생성")
             await asyncio.sleep(2)
             if after.channel.name == "check in" or after.channel.name == "띠로링 ㅣ🚪":
-                print("띠로링")
                 if member in after.channel.members:
                     if member.guild.name == "『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝":
                         newChannel = await after.channel.category.create_voice_channel(name=str(random.randint(100,999)) + "호")
