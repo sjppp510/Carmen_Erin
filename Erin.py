@@ -864,8 +864,9 @@ async def Sns(message, talk):
 @client.event
 async def on_voice_state_update(member, before, after):
     try:
+        print(after.channel.name)
+        print(member.voice.channel.category.name)
         if member.voice.channel.category.name == "여관" or member.voice.channel.category.name == "•방생성•":
-            print("after.channel.name")
             await asyncio.sleep(2)
             if after.channel.name == "check in" or after.channel.name == "띠로링ㅣ🚪":
                 if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="check in").members:
