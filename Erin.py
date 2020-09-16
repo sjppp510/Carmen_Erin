@@ -864,11 +864,14 @@ async def Sns(message, talk):
 @client.event
 async def on_voice_state_update(member, before, after):
     try:
-        if member.voice.channel.category.name == "여관":
+        if member.voice.channel.category.name == "여관" or member.voice.channel.category.name == "• 방생성 •":
             await asyncio.sleep(2)
-            if after.channel.name == "check in":
+            if after.channel.name == "check in" or after.channel.name == "띠로링 ㅣ 🚪":
                 if member in discord.utils.get(client.get_all_channels(), guild__name=member.guild.name, name="check in").members:
-                    newChannel = await after.channel.category.create_voice_channel(name=str(random.randint(100,999)) + "호", reason="하바유보")
+                    if member.guild.name == "『카르멘』𝓒𝓐𝓡𝓜𝓔𝓝":
+                        newChannel = await after.channel.category.create_voice_channel(name=str(random.randint(100,999)) + "호")
+                    else:
+                        newChannel = await after.channel.category.create_voice_channel(name="또로롱")
                     await newChannel.set_permissions(member, manage_channels=True)
                     await member.move_to(newChannel)
             elif after.channel.name == "private check in":
@@ -880,8 +883,8 @@ async def on_voice_state_update(member, before, after):
     except (AttributeError, TypeError):
         None
     try:
-        if before.channel.category.name == "여관":
-            if before.channel.name != "check in" and len(before.channel.members) == 0 and before.channel.name != "private check in":
+        if before.channel.category.name == "여관" or before.channel.category.name == "• 방생성 •":
+            if before.channel.name != "check in" and len(before.channel.members) == 0 and before.channel.name != "private check in" and before.channel.name != "띠로링 ㅣ 🚪":
                 await before.channel.delete()
     except (AttributeError, discord.errors.NotFound):
         return None
