@@ -29,7 +29,16 @@ async def on_ready():
     await client.change_presence(status=discord.Status.online)
     #, activity=game
     
-
+@client.event
+async def on_error(event, *args, **kwargs):
+    appInfo = await client.application_info()
+    owner = appInfo.owner
+    if len(args) > 0:
+        await owner.send("{0} : {1}\n{2} 에러\n에러메세지 : {3}".format(args[0].author.display_name, args[0].content, event, traceback.format_exc()))
+        return None
+    else:
+        await owner.send("{0}에러\n{1}".format(event, traceback.format_exc()))
+        return None
     
 @client.event
 async def on_message(message):
