@@ -71,7 +71,6 @@ async def on_message(message):
                         except TypeError:
                             pass
                         return None
-        else:
     except discord.errors.HTTPException:
         appInfo = await client.application_info()
         owner = appInfo.owner
