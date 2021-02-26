@@ -15,8 +15,8 @@ mongo_URL = os.environ["MONGO_URL"]
 connection = MongoClient(mongo_URL)
 db = connection.get_database("Erin")
 
-prefix = "에린아 "
-prefix2 = "에 "
+prefix = "용왕님 "
+prefix2 = "용왕님"
 
 isPlaying = False
 
